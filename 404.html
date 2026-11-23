@@ -57,6 +57,9 @@
             // body 내용 반영
             document.body.innerHTML = doc.body.innerHTML;
 
+            // 전달받은 값 먼저 설정
+            window.pageValue = value;
+            
             // 스크립트 다시 실행
             document.body.querySelectorAll("script").forEach(oldScript => {
                 const newScript = document.createElement("script");
