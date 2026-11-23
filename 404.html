@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HUNTER2</title>
 </head>
 <body>
@@ -14,7 +15,7 @@
         ? path.substring(basePath.length).replace(/\/$/, "")
         : "";
 
-   // 유효성 검사
+    // 유효성 검사
     const isValid =
         location.search === "" &&
         location.hash === "" &&
@@ -22,24 +23,66 @@
         !value.includes("/") &&
         !value.includes("\\");
 
-    if (isValid) {
-        fetch(`${basePath}main.html`)
-            .then(response => response.text())
-            .then(html => {
-                document.open();
-                document.write(html);
-                document.close();
+    // 404 화면 표시
+    function show404() {
+        document.title = "404 - 페이지를 찾을 수 없습니다.";
 
-                // 추출한 값 사용
-                window.downloadValue = value;
+        document.body.innerHTML = `
+            <h2>404 - 페이지를 찾을 수 없습니다.</h2>
+            <p>요청하신 주소가 올바르지 않습니다.</p>
+        `;
+    }
+
+    // main.html 불러오기
+    async function loadMain() {
+        try {
+            const response = await fetch(`${basePath}main.html`);
+
+            if (!response.ok) {
+                throw new Error("main.html을 불러오지 못했습니다.");
+            }
+
+            const html = await response.text();
+
+            // HTML 파싱
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+
+            // 제목 변경
+            document.title = doc.title || "HUNTER2";
+
+            // head의 스타일 및 기타 요소 반영
+            document.head.innerHTML = doc.head.innerHTML;
+
+            // body 내용 반영
+            document.body.innerHTML = doc.body.innerHTML;
+
+            // 스크립트 다시 실행
+            document.body.querySelectorAll("script").forEach(oldScript => {
+                const newScript = document.createElement("script");
+
+                [...oldScript.attributes].forEach(attr => {
+                    newScript.setAttribute(attr.name, attr.value);
+                });
+
+                newScript.textContent = oldScript.textContent;
+                oldScript.replaceWith(newScript);
             });
-  } else {
-      // 기본 404 페이지 표시
-      document.body.innerHTML = `
-        <h2>404 - 페이지를 찾을 수 없습니다.</h2>
-        <p>요청하신 주소가 올바르지 않습니다.</p>
-      `;
-  }
+
+            // 전달받은 값 사용
+            window.pageValue = value;
+
+        } catch (error) {
+            console.error(error);
+            show404();
+        }
+    }
+
+    if (isValid) {
+        loadMain();
+    } else {
+        show404();
+    }
 </script>
 </body>
 </html>
