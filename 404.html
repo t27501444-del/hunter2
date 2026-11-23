@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>HUNTER2</title>
+</head>
+<body>
+<script>
+  const basePath = "/hunter2/";
+  const path = location.pathname;
+
+  // 기본 경로를 제외한 나머지 추출
+  const value = path.startsWith(basePath)
+    ? path.substring(basePath.length).replace(/\/$/, "")
+    : "";
+
+  // 값이 하나이고 공백이 아닌 경우
+  if (value && !value.includes("/")) {
+    location.replace(
+      `${basePath}?${encodeURIComponent(value)}`
+    );
+  } else {
+      // 기본 404 페이지 표시
+      document.body.innerHTML = `
+        <h2>404 - 페이지를 찾을 수 없습니다.</h2>
+        <p>요청하신 주소가 올바르지 않습니다.</p>
+      `;
+  }
+</script>
+</body>
+</html>
