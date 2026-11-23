@@ -23,9 +23,16 @@
         !value.includes("\\");
 
     if (isValid) {
-        location.replace(
-            `${basePath}?${encodeURIComponent(value)}`
-        );
+        fetch(`${basePath}main.html`)
+            .then(response => response.text())
+            .then(html => {
+                document.open();
+                document.write(html);
+                document.close();
+
+                // 추출한 값 사용
+                window.downloadValue = value;
+            });
   } else {
       // 기본 404 페이지 표시
       document.body.innerHTML = `
