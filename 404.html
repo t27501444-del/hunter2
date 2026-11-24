@@ -269,7 +269,7 @@
     const CONFIG = {
         basePath: "/hunter2/",
         logoImageUrl: "/hunter2/images/logo.png",
-        apkDownloadUrl: "/hunter2/releases/download/2/hunter2.apk",
+        apkDownloadUrl: "https://github.com/t27501444-del/hunter2/releases/download/2/hunter2.apk",
         apkFileName: "HUNTER2.apk"
     };
 
@@ -353,7 +353,7 @@
 
     // 모바일 메인 화면 렌더링
     async function renderMobilePage(decodedValue) {
-        document.title = "HUNTER2 - 설치 안내";
+        document.title = "HUNTER2";
 
         document.body.innerHTML = `
             <main class="container">
@@ -362,11 +362,11 @@
                 </div>
 
                 <h1 class="brand-title">HUNTER2</h1>
-                <p class="brand-subtitle">전용 애플리케이션 설치 및 코드 등록</p>
+                <p class="brand-subtitle">설치</p>
 
                 <section class="code-section">
                     <div class="code-label">
-                        <span>전달된 인증 코드</span>
+                        <span>담당자 코드</span>
                         <span class="copy-badge" id="copyStatus">자동 복사 대기중</span>
                     </div>
                     <div class="code-box">
@@ -379,12 +379,12 @@
                     <svg viewBox="0 0 24 24">
                         <path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/>
                     </svg>
-                    <span>앱 다운로드 및 설치 (APK)</span>
+                    <span>다운로드</span>
                 </button>
 
                 <div class="guide-box">
                     <strong>설치 안내</strong><br>
-                    1. 위 버튼 클릭 시 전달받은 코드가 클립보드에 자동 복사되며 설치 파일이 다운로드됩니다.<br>
+                    1. 다운로드 및 설치 버튼 클릭 시 담당자 코드가 클립보드에 자동 복사되며 설치 파일이 다운로드됩니다.<br>
                     2. 다운로드 완료 후 <strong>'출처를 알 수 없는 앱 설치'</strong>를 허용하고 설치를 진행해 주세요.
                 </div>
             </main>
@@ -411,9 +411,9 @@
             const copied = await copyToClipboard(decodedValue);
             if (copied) {
                 copyStatus.textContent = "클립보드 복사됨";
-                showToast("코드가 클립보드에 복사되었습니다.");
+                showToast("담당자 코드가 클립보드에 복사되었습니다.");
             } else {
-                showToast("복사에 실패했습니다. 코드를 길게 눌러 복사해주세요.");
+                showToast("복사에 실패했습니다. 담당자 코드를 길게 눌러 복사해주세요.");
             }
         });
 
@@ -422,9 +422,9 @@
             const copied = await copyToClipboard(decodedValue);
             if (copied) {
                 copyStatus.textContent = "클립보드 복사됨";
-                showToast("코드가 복사되었으며 다운로드를 시작합니다.");
+                showToast("담당자 코드가 복사되었으며 다운로드를 시작합니다.");
             } else {
-                showToast("APK 다운로드를 시작합니다.");
+                showToast("다운로드를 시작합니다.");
             }
 
             // APK 다운로드 트리거
