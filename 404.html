@@ -2,89 +2,458 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HUNTER2</title>
+    <style>
+        :root {
+            --bg-color: #09090b;
+            --card-bg: #121216;
+            --border-color: #27272a;
+            --crimson: #e11d48;
+            --crimson-dark: #9f1239;
+            --crimson-glow: rgba(225, 29, 72, 0.35);
+            --text-main: #f4f4f5;
+            --text-sub: #a1a1aa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, rgba(159, 18, 57, 0.25) 0%, transparent 60%);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 20px;
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(225, 29, 72, 0.08);
+            text-align: center;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 로고 영역 */
+        .logo-wrapper {
+            position: relative;
+            width: 124px;
+            height: 124px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--crimson), #000000);
+            box-shadow: 0 0 28px var(--crimson-glow);
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            background-color: #000;
+        }
+
+        .brand-title {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: #ffffff;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 10px rgba(225, 29, 72, 0.4);
+        }
+
+        .brand-subtitle {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 28px;
+        }
+
+        /* 전달받은 값(인증 코드) 카드 */
+        .code-section {
+            background: #09090b;
+            border: 1px solid #27272a;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .code-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+        }
+
+        .copy-badge {
+            font-size: 11px;
+            color: #fb7185;
+            background: rgba(225, 29, 72, 0.15);
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
+        .code-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: #16161b;
+            border: 1px solid #2e2e36;
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .code-value {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-copy {
+            background: #27272a;
+            color: #f4f4f5;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-copy:active {
+            transform: scale(0.95);
+            background: #3f3f46;
+        }
+
+        /* APK 다운로드 버튼 */
+        .btn-download {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 20px var(--crimson-glow);
+            transition: transform 0.15s, filter 0.2s;
+            margin-bottom: 18px;
+        }
+
+        .btn-download:active {
+            transform: scale(0.97);
+            filter: brightness(0.9);
+        }
+
+        .btn-download svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* 안내 가이드 */
+        .guide-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--text-sub);
+            text-align: left;
+        }
+
+        .guide-box strong {
+            color: #e4e4e7;
+        }
+
+        /* 404 및 비모바일 차단 화면 */
+        .error-container {
+            width: 100%;
+            max-width: 380px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 36px 24px;
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 42px;
+            margin-bottom: 16px;
+        }
+
+        .error-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .error-desc {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        /* 토스트 알림 */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(24, 24, 27, 0.95);
+            border: 1px solid var(--crimson);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s, transform 0.25s;
+            z-index: 999;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
 </head>
 <body>
+
 <script>
-    const basePath = "/hunter2/";
+    // ==========================================
+    // 설정 영역 (실제 경로에 맞게 수정하세요)
+    // ==========================================
+    const CONFIG = {
+        basePath: "/hunter2/",
+        logoImageUrl: "/hunter2/images/logo.png",
+        apkDownloadUrl: "/hunter2/releases/download/2/hunter2.apk",
+        apkFileName: "HUNTER2.apk"
+    };
+
     const path = location.pathname;
 
     // 기본 경로를 제외한 나머지 추출
-    const value = path.startsWith(basePath)
-        ? path.substring(basePath.length).replace(/\/$/, "")
+    const value = path.startsWith(CONFIG.basePath)
+        ? path.substring(CONFIG.basePath.length).replace(/\/$/, "")
         : "";
 
-    // 유효성 검사
-    const isValid =
+    // URL 유효성 검사
+    const isValidPath =
         location.search === "" &&
         location.hash === "" &&
         value.length > 0 &&
         !value.includes("/") &&
         !value.includes("\\");
 
-    // 404 화면 표시
-    function show404() {
-        document.title = "404 - 페이지를 찾을 수 없습니다.";
+    // 모바일 기기 접속 여부 확인
+    function isMobileDevice() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        // iPadOS 13+ 데스크톱 모드 대응
+        const isIPadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+        return isMobileUA || isIPadOS;
+    }
 
+    // 클립보드 복사 함수 (최신 API + 구형 브라우저 폴백 지원)
+    async function copyToClipboard(text) {
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return true;
+            }
+        } catch (e) {
+            // 폴백으로 진행
+        }
+
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        let success = false;
+        try {
+            success = document.execCommand("copy");
+        } catch (err) {
+            success = false;
+        }
+        document.body.removeChild(textArea);
+        return success;
+    }
+
+    // 토스트 메시지 표시
+    let toastTimer = null;
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2500);
+    }
+
+    // 404 또는 접근 제한 화면 표시
+    function showErrorPage(title, description, icon = "🚫") {
+        document.title = title;
         document.body.innerHTML = `
-            <h2>404 - 페이지를 찾을 수 없습니다.</h2>
-            <p>요청하신 주소가 올바르지 않습니다.</p>
+            <div class="error-container">
+                <div class="error-icon">${icon}</div>
+                <h2 class="error-title">${title}</h2>
+                <p class="error-desc">${description}</p>
+            </div>
         `;
     }
 
-    // main.html 불러오기
-    async function loadMain() {
-        try {
-            const response = await fetch(`${basePath}main.html`);
+    // 모바일 메인 화면 렌더링
+    async function renderMobilePage(decodedValue) {
+        document.title = "HUNTER2 - 설치 안내";
 
-            if (!response.ok) {
-                throw new Error("main.html을 불러오지 못했습니다.");
+        document.body.innerHTML = `
+            <main class="container">
+                <div class="logo-wrapper">
+                    <img src="${CONFIG.logoImageUrl}" alt="HUNTER2 Logo" class="logo-img" onerror="this.style.display='none'">
+                </div>
+
+                <h1 class="brand-title">HUNTER2</h1>
+                <p class="brand-subtitle">전용 애플리케이션 설치 및 코드 등록</p>
+
+                <section class="code-section">
+                    <div class="code-label">
+                        <span>전달된 인증 코드</span>
+                        <span class="copy-badge" id="copyStatus">자동 복사 대기중</span>
+                    </div>
+                    <div class="code-box">
+                        <span class="code-value" id="displayValue"></span>
+                        <button type="button" class="btn-copy" id="copyBtn">복사</button>
+                    </div>
+                </section>
+
+                <button type="button" class="btn-download" id="downloadBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/>
+                    </svg>
+                    <span>앱 다운로드 및 설치 (APK)</span>
+                </button>
+
+                <div class="guide-box">
+                    <strong>설치 안내</strong><br>
+                    1. 위 버튼 클릭 시 전달받은 코드가 클립보드에 자동 복사되며 설치 파일이 다운로드됩니다.<br>
+                    2. 다운로드 완료 후 <strong>'출처를 알 수 없는 앱 설치'</strong>를 허용하고 설치를 진행해 주세요.
+                </div>
+            </main>
+            <div class="toast" id="toast"></div>
+        `;
+
+        // XSS 방지를 위해 textContent로 안전하게 값 삽입
+        document.getElementById("displayValue").textContent = decodedValue;
+
+        const copyBtn = document.getElementById("copyBtn");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const copyStatus = document.getElementById("copyStatus");
+
+        // 페이지 진입 시 자동 복사 시도 (브라우저 정책에 따라 사용자 터치 전엔 차단될 수 있음)
+        const initialCopied = await copyToClipboard(decodedValue);
+        if (initialCopied) {
+            copyStatus.textContent = "클립보드 복사됨";
+        } else {
+            copyStatus.textContent = "버튼 클릭 시 복사";
+        }
+
+        // 수동 복사 버튼 이벤트
+        copyBtn.addEventListener("click", async () => {
+            const copied = await copyToClipboard(decodedValue);
+            if (copied) {
+                copyStatus.textContent = "클립보드 복사됨";
+                showToast("코드가 클립보드에 복사되었습니다.");
+            } else {
+                showToast("복사에 실패했습니다. 코드를 길게 눌러 복사해주세요.");
+            }
+        });
+
+        // APK 다운로드 버튼 이벤트 (클립보드 복사 보장 + 다운로드 실행)
+        downloadBtn.addEventListener("click", async () => {
+            const copied = await copyToClipboard(decodedValue);
+            if (copied) {
+                copyStatus.textContent = "클립보드 복사됨";
+                showToast("코드가 복사되었으며 다운로드를 시작합니다.");
+            } else {
+                showToast("APK 다운로드를 시작합니다.");
             }
 
-            const html = await response.text();
-
-            // HTML 파싱
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, "text/html");
-
-            // 제목 변경
-            document.title = doc.title || "HUNTER2";
-
-            // head의 스타일 및 기타 요소 반영
-            document.head.innerHTML = doc.head.innerHTML;
-
-            // body 내용 반영
-            document.body.innerHTML = doc.body.innerHTML;
-
-            // 전달받은 값 먼저 설정
-            window.pageValue = value;
-            
-            // 스크립트 다시 실행
-            document.body.querySelectorAll("script").forEach(oldScript => {
-                const newScript = document.createElement("script");
-
-                [...oldScript.attributes].forEach(attr => {
-                    newScript.setAttribute(attr.name, attr.value);
-                });
-
-                newScript.textContent = oldScript.textContent;
-                oldScript.replaceWith(newScript);
-            });
-
-            // 전달받은 값 사용
-            window.pageValue = value;
-
-        } catch (error) {
-            console.error(error);
-            show404();
-        }
+            // APK 다운로드 트리거
+            const link = document.createElement("a");
+            link.href = CONFIG.apkDownloadUrl;
+            link.setAttribute("download", CONFIG.apkFileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
     }
 
-    if (isValid) {
-        loadMain();
+    // 진입점 실행 로직
+    if (!isValidPath) {
+        showErrorPage(
+            "404 - 페이지를 찾을 수 없습니다.",
+            "요청하신 주소가 올바르지 않거나 만료되었습니다.",
+            "⚠️"
+        );
+    } else if (!isMobileDevice()) {
+        showErrorPage(
+            "모바일 전용 페이지입니다.",
+            "PC 환경에서는 접속할 수 없습니다.<br>스마트폰 모바일 브라우저로 접속해 주세요.",
+            "📱"
+        );
     } else {
-        show404();
+        // URL 인코딩된 한글/특수문자 복원 후 렌더링
+        const decodedValue = decodeURIComponent(value);
+        renderMobilePage(decodedValue);
     }
 </script>
 </body>
