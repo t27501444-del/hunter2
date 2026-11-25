@@ -1,460 +1,106 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HUNTER2</title>
-    <style>
-        :root {
-            --bg-color: #09090b;
-            --card-bg: #121216;
-            --border-color: #27272a;
-            --crimson: #e11d48;
-            --crimson-dark: #9f1239;
-            --crimson-glow: rgba(225, 29, 72, 0.35);
-            --text-main: #f4f4f5;
-            --text-sub: #a1a1aa;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 50% 0%, rgba(159, 18, 57, 0.25) 0%, transparent 60%);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-            min-height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px 20px;
-        }
-
-        /* 메인 컨테이너 */
-        .container {
-            width: 100%;
-            max-width: 400px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 32px 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(225, 29, 72, 0.08);
-            text-align: center;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 로고 영역 */
-        .logo-wrapper {
-            position: relative;
-            width: 124px;
-            height: 124px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            padding: 4px;
-            background: linear-gradient(135deg, var(--crimson), #000000);
-            box-shadow: 0 0 28px var(--crimson-glow);
-        }
-
-        .logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            display: block;
-            background-color: #000;
-        }
-
-        .brand-title {
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            color: #ffffff;
-            margin-bottom: 6px;
-            text-shadow: 0 2px 10px rgba(225, 29, 72, 0.4);
-        }
-
-        .brand-subtitle {
-            font-size: 13px;
-            color: var(--text-sub);
-            margin-bottom: 28px;
-        }
-
-        /* 전달받은 값(인증 코드) 카드 */
-        .code-section {
-            background: #09090b;
-            border: 1px solid #27272a;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 24px;
-            text-align: left;
-        }
-
-        .code-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: var(--text-sub);
-            margin-bottom: 10px;
-        }
-
-        .copy-badge {
-            font-size: 11px;
-            color: #fb7185;
-            background: rgba(225, 29, 72, 0.15);
-            padding: 2px 8px;
-            border-radius: 999px;
-            font-weight: 600;
-        }
-
-        .code-box {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            background: #16161b;
-            border: 1px solid #2e2e36;
-            border-radius: 12px;
-            padding: 12px 14px;
-        }
-
-        .code-value {
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 1px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .btn-copy {
-            background: #27272a;
-            color: #f4f4f5;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: background 0.2s, transform 0.1s;
-        }
-
-        .btn-copy:active {
-            transform: scale(0.95);
-            background: #3f3f46;
-        }
-
-        /* APK 다운로드 버튼 */
-        .btn-download {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
-            color: #ffffff;
-            border: none;
-            border-radius: 14px;
-            padding: 16px 20px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 8px 20px var(--crimson-glow);
-            transition: transform 0.15s, filter 0.2s;
-            margin-bottom: 18px;
-        }
-
-        .btn-download:active {
-            transform: scale(0.97);
-            filter: brightness(0.9);
-        }
-
-        .btn-download svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-
-        /* 안내 가이드 */
-        .guide-box {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 12px;
-            line-height: 1.6;
-            color: var(--text-sub);
-            text-align: left;
-        }
-
-        .guide-box strong {
-            color: #e4e4e7;
-        }
-
-        /* 404 및 비모바일 차단 화면 */
-        .error-container {
-            width: 100%;
-            max-width: 380px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 36px 24px;
-            text-align: center;
-        }
-
-        .error-icon {
-            font-size: 42px;
-            margin-bottom: 16px;
-        }
-
-        .error-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-        }
-
-        .error-desc {
-            font-size: 14px;
-            color: var(--text-sub);
-            line-height: 1.5;
-        }
-
-        /* 토스트 알림 */
-        .toast {
-            position: fixed;
-            bottom: 32px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: rgba(24, 24, 27, 0.95);
-            border: 1px solid var(--crimson);
-            color: #ffffff;
-            padding: 12px 20px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 600;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s, transform 0.25s;
-            z-index: 999;
-            white-space: nowrap;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#08070b">
+<title>HUNTER2 | INSTALL</title>
+<style>
+:root{--bg:#08070b;--panel:rgba(17,14,22,.88);--line:rgba(255,65,112,.32);--red:#ff245d;--pink:#ff5b91;--muted:#aaa3b2;--white:#f8f5fa;--glow:0 0 28px rgba(255,36,93,.28)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{min-height:100%;background:var(--bg)}
+body{min-height:100dvh;display:flex;justify-content:center;align-items:center;padding:28px 18px 34px;overflow-x:hidden;color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:radial-gradient(ellipse at 50% -12%,rgba(176,12,61,.34),transparent 48%),radial-gradient(ellipse at 100% 55%,rgba(94,14,54,.16),transparent 38%),linear-gradient(180deg,#09070c,#08070b 58%,#100811);position:relative}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.17;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(to bottom,#000,transparent 85%)}
+body:after{content:"";position:fixed;width:340px;height:340px;border:1px solid rgba(255,35,91,.12);border-radius:50%;top:-230px;left:50%;transform:translateX(-50%);box-shadow:0 0 0 24px rgba(255,35,91,.025),0 0 0 50px rgba(255,35,91,.018);pointer-events:none}
+.page{width:100%;max-width:430px;position:relative;z-index:1;animation:enter .75s cubic-bezier(.2,.75,.25,1) both}
+@keyframes enter{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.hero{text-align:center;padding:12px 8px 27px;position:relative}
+.emblem{width:112px;height:112px;margin:0 auto 18px;border-radius:50%;padding:3px;position:relative;background:linear-gradient(145deg,#ff9ab7 0%,#ff245d 35%,#3b1026 75%,#100b13);box-shadow:0 0 22px rgba(255,36,93,.42),inset 0 0 18px rgba(255,255,255,.12)}
+.emblem:before{content:"";position:absolute;inset:-9px;border:1px solid rgba(255,71,119,.36);border-radius:50%;box-shadow:0 0 22px rgba(255,36,93,.2);animation:pulse 3s ease-in-out infinite}
+.emblem-inner{height:100%;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 35%,#482033,#100b13 68%);border:1px solid rgba(255,255,255,.14)}
+.emblem-inner img{width:100%;height:100%;object-fit:cover}
+.emblem-mark{font-size:47px;font-weight:900;font-style:italic;letter-spacing:-7px;color:#fff;text-shadow:0 0 12px #ff245d,0 0 30px #ff245d;transform:translateX(-3px)}
+@keyframes pulse{50%{transform:scale(1.055);opacity:.55}}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:5px;color:var(--pink);margin-bottom:8px;text-transform:uppercase}
+.brand{font-size:clamp(38px,11vw,52px);font-weight:950;letter-spacing:1px;line-height:1;color:#fff;text-shadow:0 3px 0 #64102b,0 0 22px rgba(255,36,93,.34)}
+.brand span{color:var(--red);text-shadow:0 0 20px rgba(255,36,93,.65)}
+.subtitle{font-size:11px;letter-spacing:6px;font-weight:800;color:#d8cbd5;margin-top:12px}
+.tagline{font-size:10px;letter-spacing:3px;color:#8f8494;margin-top:16px}
+.section{position:relative;background:linear-gradient(145deg,rgba(27,20,31,.94),rgba(11,9,15,.96));border:1px solid var(--line);border-radius:18px;padding:19px;margin-bottom:15px;box-shadow:0 15px 38px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.045)}
+.section:before{content:"";position:absolute;left:18px;right:18px;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--pink),transparent);opacity:.8}
+.code-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:15px}
+.label-wrap{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:800}
+.shield{width:27px;height:27px;border-radius:9px;display:grid;place-items:center;color:#ff8eae;background:rgba(255,36,93,.13);border:1px solid rgba(255,83,128,.3);font-size:14px}
+.status{font-size:10px;color:#ff8eae;border:1px solid rgba(255,65,112,.35);background:rgba(255,36,93,.09);border-radius:30px;padding:6px 9px;white-space:nowrap}
+.code-row{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.36);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:8px 8px 8px 13px;min-width:0}
+.code-value{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:clamp(16px,4.5vw,20px);font-weight:800;letter-spacing:1px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;text-shadow:0 0 12px rgba(255,255,255,.12);user-select:all}
+.btn-copy{flex-shrink:0;border:1px solid rgba(255,255,255,.13);border-radius:9px;background:linear-gradient(180deg,#302936,#1a1720);color:#fff;font-size:12px;font-weight:800;padding:11px 13px;cursor:pointer;transition:.18s}
+.btn-copy:active{transform:scale(.96);background:#493342}
+.download{width:100%;min-height:68px;display:flex;align-items:center;justify-content:center;gap:13px;border:1px solid rgba(255,158,184,.65);border-radius:15px;color:white;background:linear-gradient(110deg,#ff4778 0%,#e20d4b 48%,#9e0d3b 100%);box-shadow:0 9px 28px rgba(225,13,75,.3),inset 0 1px rgba(255,255,255,.35);font-size:19px;font-weight:900;letter-spacing:1px;cursor:pointer;position:relative;overflow:hidden;transition:transform .16s,filter .16s;margin-bottom:17px}
+.download:before{content:"";position:absolute;top:-80%;left:-35%;width:24%;height:260%;transform:rotate(25deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);animation:sheen 4s ease-in-out infinite}
+@keyframes sheen{0%,55%{left:-35%}100%{left:125%}}
+.download:active{transform:scale(.975);filter:brightness(.9)}
+.download svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.download-copy{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.download-copy small{font-size:9px;letter-spacing:3px;font-weight:700;opacity:.78}
+.guide{padding:17px 18px}
+.guide-title{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:900;margin-bottom:14px}
+.info-icon{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:rgba(255,36,93,.17);color:#ff82a5;border:1px solid rgba(255,36,93,.3);font-size:13px}
+.steps{display:grid;gap:13px}
+.step{display:grid;grid-template-columns:25px 1fr;gap:10px;align-items:start;color:#bcb4c1;font-size:11px;line-height:1.75}
+.step-num{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,#fa356c,#8e103c);font-size:11px;font-weight:900;box-shadow:0 0 12px rgba(255,36,93,.2)}
+.step strong{color:#f4edf3;font-weight:800}
+.footer{text-align:center;padding:13px 0 0;color:#756a79;font-size:9px;letter-spacing:4px}
+.footer b{color:#ed4779;font-weight:700;margin:0 7px}
+.toast{position:fixed;z-index:10;bottom:25px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:rgba(24,18,28,.96);border:1px solid rgba(255,65,112,.65);box-shadow:var(--glow);border-radius:30px;padding:12px 18px;color:#fff;font-size:12px;font-weight:700;white-space:nowrap;transition:opacity .22s,transform .22s;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.error{width:100%;max-width:380px;text-align:center;padding:35px 25px;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:var(--glow)}
+.error-icon{font-size:38px;margin-bottom:14px}.error-title{font-size:19px;margin-bottom:10px}.error-desc{font-size:13px;line-height:1.7;color:var(--muted)}
+@media(min-width:600px){body{padding-top:45px;padding-bottom:45px}.page{max-width:410px}.hero{padding-top:20px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
-
 <script>
-    // ==========================================
-    // 설정 영역 (실제 경로에 맞게 수정하세요)
-    // ==========================================
-    const CONFIG = {
-        basePath: "/hunter2/",
-        logoImageUrl: "/hunter2/images/logo.png",
-        apkDownloadUrl: "https://github.com/t27501444-del/hunter2/releases/download/2/hunter2.apk",
-        apkFileName: "HUNTER2.apk"
-    };
-
-    const path = location.pathname;
-
-    // 기본 경로를 제외한 나머지 추출
-    const value = path.startsWith(CONFIG.basePath)
-        ? path.substring(CONFIG.basePath.length).replace(/\/$/, "")
-        : "";
-
-    // URL 유효성 검사
-    const isValidPath =
-        location.search === "" &&
-        location.hash === "" &&
-        value.length > 0 &&
-        !value.includes("/") &&
-        !value.includes("\\");
-
-    // 모바일 기기 접속 여부 확인
-    function isMobileDevice() {
-        const ua = navigator.userAgent || navigator.vendor || window.opera;
-        const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-        // iPadOS 13+ 데스크톱 모드 대응
-        const isIPadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
-        return isMobileUA || isIPadOS;
-    }
-
-    // 클립보드 복사 함수 (최신 API + 구형 브라우저 폴백 지원)
-    async function copyToClipboard(text) {
-        try {
-            if (navigator.clipboard && window.isSecureContext) {
-                await navigator.clipboard.writeText(text);
-                return true;
-            }
-        } catch (e) {
-            // 폴백으로 진행
-        }
-
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-
-        let success = false;
-        try {
-            success = document.execCommand("copy");
-        } catch (err) {
-            success = false;
-        }
-        document.body.removeChild(textArea);
-        return success;
-    }
-
-    // 토스트 메시지 표시
-    let toastTimer = null;
-    function showToast(message) {
-        const toast = document.getElementById("toast");
-        if (!toast) return;
-        toast.textContent = message;
-        toast.classList.add("show");
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => {
-            toast.classList.remove("show");
-        }, 2500);
-    }
-
-    // 404 또는 접근 제한 화면 표시
-    function showErrorPage(title, description, icon = "🚫") {
-        document.title = title;
-        document.body.innerHTML = `
-            <div class="error-container">
-                <div class="error-icon">${icon}</div>
-                <h2 class="error-title">${title}</h2>
-                <p class="error-desc">${description}</p>
-            </div>
-        `;
-    }
-
-    // 모바일 메인 화면 렌더링
-    async function renderMobilePage(decodedValue) {
-        document.title = "HUNTER2";
-
-        document.body.innerHTML = `
-            <main class="container">
-                <div class="logo-wrapper">
-                    <img src="${CONFIG.logoImageUrl}" alt="HUNTER2 Logo" class="logo-img" onerror="this.style.display='none'">
-                </div>
-
-                <h1 class="brand-title">HUNTER2</h1>
-                <p class="brand-subtitle">설치</p>
-
-                <section class="code-section">
-                    <div class="code-label">
-                        <span>담당자 코드</span>
-                        <span class="copy-badge" id="copyStatus">자동 복사 대기중</span>
-                    </div>
-                    <div class="code-box">
-                        <span class="code-value" id="displayValue"></span>
-                        <button type="button" class="btn-copy" id="copyBtn">복사</button>
-                    </div>
-                </section>
-
-                <button type="button" class="btn-download" id="downloadBtn">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/>
-                    </svg>
-                    <span>다운로드</span>
-                </button>
-
-                <div class="guide-box">
-                    <strong>설치 안내</strong><br>
-                    1. 다운로드 버튼 클릭 시 담당자 코드가 클립보드에 자동 복사되며 설치 파일이 다운로드됩니다.<br>
-                    2. 다운로드 완료 후 <strong>'출처를 알 수 없는 앱 설치'</strong>를 허용하고 설치를 진행해 주세요.
-                </div>
-            </main>
-            <div class="toast" id="toast"></div>
-        `;
-
-        // XSS 방지를 위해 textContent로 안전하게 값 삽입
-        document.getElementById("displayValue").textContent = decodedValue;
-
-        const copyBtn = document.getElementById("copyBtn");
-        const downloadBtn = document.getElementById("downloadBtn");
-        const copyStatus = document.getElementById("copyStatus");
-
-        // 페이지 진입 시 자동 복사 시도 (브라우저 정책에 따라 사용자 터치 전엔 차단될 수 있음)
-        const initialCopied = await copyToClipboard(decodedValue);
-        if (initialCopied) {
-            copyStatus.textContent = "클립보드 복사됨";
-        } else {
-            copyStatus.textContent = "버튼 클릭 시 복사";
-        }
-
-        // 수동 복사 버튼 이벤트
-        copyBtn.addEventListener("click", async () => {
-            const copied = await copyToClipboard(decodedValue);
-            if (copied) {
-                copyStatus.textContent = "클립보드 복사됨";
-                showToast("담당자 코드가 클립보드에 복사되었습니다.");
-            } else {
-                showToast("복사에 실패했습니다. 담당자 코드를 길게 눌러 복사해주세요.");
-            }
-        });
-
-        // APK 다운로드 버튼 이벤트 (클립보드 복사 보장 + 다운로드 실행)
-        downloadBtn.addEventListener("click", async () => {
-            const copied = await copyToClipboard(decodedValue);
-            if (copied) {
-                copyStatus.textContent = "클립보드 복사됨";
-                showToast("담당자 코드가 복사되었으며 다운로드를 시작합니다.");
-            } else {
-                showToast("다운로드를 시작합니다.");
-            }
-
-            // APK 다운로드 트리거
-            const link = document.createElement("a");
-            link.href = CONFIG.apkDownloadUrl;
-            link.setAttribute("download", CONFIG.apkFileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-    }
-
-    // 진입점 실행 로직
-    if (!isValidPath) {
-        showErrorPage(
-            "404 - 페이지를 찾을 수 없습니다.",
-            "요청하신 주소가 올바르지 않거나 만료되었습니다.",
-            "⚠️"
-        );
-    } else if (!isMobileDevice()) {
-        showErrorPage(
-            "모바일 전용 페이지입니다.",
-            "PC 환경에서는 접속할 수 없습니다.<br>스마트폰 모바일 브라우저로 접속해 주세요.",
-            "📱"
-        );
-    } else {
-        // URL 인코딩된 한글/특수문자 복원 후 렌더링
-        const decodedValue = decodeURIComponent(value);
-        renderMobilePage(decodedValue);
-    }
+const CONFIG={
+  basePath:"/hunter2/",
+  logoImageUrl:"/hunter2/images/logo.png",
+  apkDownloadUrl:"https://github.com/t27501444-del/hunter2/releases/download/2/hunter2.apk",
+  apkFileName:"HUNTER2.apk"
+};
+const path=location.pathname;
+const rawValue=path.startsWith(CONFIG.basePath)?path.substring(CONFIG.basePath.length).replace(/\/$/,""):"";
+const isValidPath=location.search===""&&location.hash===""&&rawValue.length>0&&!rawValue.includes("/")&&!rawValue.includes("\\");
+function isMobileDevice(){const ua=navigator.userAgent||navigator.vendor||window.opera;const mobile=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);const iPadOS=navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1;return mobile||iPadOS;}
+async function copyToClipboard(value){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(value);return true;}}catch(e){}const area=document.createElement("textarea");area.value=value;area.style.position="fixed";area.style.left="-9999px";document.body.appendChild(area);area.focus();area.select();let ok=false;try{ok=document.execCommand("copy");}catch(e){}area.remove();return ok;}
+let toastTimer;
+function showToast(message){const toast=document.getElementById("toast");if(!toast)return;toast.textContent=message;toast.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove("show"),2500);}
+function showErrorPage(title,description,icon="🚫"){document.title=title;document.body.innerHTML=`<main class="error"><div class="error-icon">${icon}</div><h2 class="error-title">${title}</h2><p class="error-desc">${description}</p></main>`;}
+async function renderMobilePage(code){
+ document.title="HUNTER2 | INSTALL";
+ document.body.innerHTML=`<main class="page">
+  <header class="hero">
+   <div class="emblem"><div class="emblem-inner"><img src="${CONFIG.logoImageUrl}" alt="HUNTER2" onerror="this.remove();this.parentElement.innerHTML='<span class=&quot;emblem-mark&quot;>H2</span>'"></div></div>
+   <div class="eyebrow">NEXT GENERATION PLATFORM</div><h1 class="brand">HUNTER<span>2</span></h1><div class="subtitle">INSTALLATION</div><p class="tagline">THE NEXT HUNTER BEGINS</p>
+  </header>
+  <section class="section">
+   <div class="code-head"><div class="label-wrap"><span class="shield">✦</span><span>담당자 코드</span></div><span class="status" id="copyStatus">● 자동 복사 대기중</span></div>
+   <div class="code-row"><span class="code-value" id="displayValue"></span><button type="button" class="btn-copy" id="copyBtn">복사</button></div>
+  </section>
+  <button type="button" class="download" id="downloadBtn"><svg viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v3h16v-3"/></svg><span class="download-copy"><span>다운로드</span><small>APK DOWNLOAD</small></span></button>
+  <section class="section guide"><h2 class="guide-title"><span class="info-icon">i</span>설치 안내</h2><div class="steps"><div class="step"><span class="step-num">1</span><p>다운로드 버튼을 누르면 <strong>담당자 코드가 클립보드에 복사</strong>되고 설치 파일 다운로드가 시작됩니다.</p></div><div class="step"><span class="step-num">2</span><p>다운로드가 완료되면 <strong>‘출처를 알 수 없는 앱 설치’</strong>를 허용한 후 설치를 진행해 주세요.</p></div></div></section>
+  <footer class="footer">HUNTER2 <b>•</b> PREMIUM APP</footer>
+ </main><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+ document.getElementById("displayValue").textContent=code;
+ const copyStatus=document.getElementById("copyStatus");
+ const initialCopied=await copyToClipboard(code);
+ copyStatus.textContent=initialCopied?"✓ 클립보드 복사됨":"● 버튼 클릭 시 복사";
+ document.getElementById("copyBtn").addEventListener("click",async()=>{const copied=await copyToClipboard(code);if(copied){copyStatus.textContent="✓ 클립보드 복사됨";showToast("담당자 코드가 복사되었습니다.");}else showToast("복사에 실패했습니다. 코드를 길게 눌러 복사해 주세요.");});
+ document.getElementById("downloadBtn").addEventListener("click",async()=>{const copied=await copyToClipboard(code);copyStatus.textContent=copied?"✓ 클립보드 복사됨":"● 버튼 클릭 시 복사";showToast(copied?"담당자 코드 복사 완료 · 다운로드를 시작합니다.":"다운로드를 시작합니다.");const link=document.createElement("a");link.href=CONFIG.apkDownloadUrl;link.setAttribute("download",CONFIG.apkFileName);document.body.appendChild(link);link.click();link.remove();});
+}
+if(!isValidPath){showErrorPage("404 - 페이지를 찾을 수 없습니다.","요청하신 주소가 올바르지 않거나 만료되었습니다.","⚠️");}
+else if(!isMobileDevice()){showErrorPage("모바일 전용 페이지입니다.","PC 환경에서는 접속할 수 없습니다. 스마트폰 모바일 브라우저로 접속해 주세요.","📱");}
+else{try{renderMobilePage(decodeURIComponent(rawValue));}catch(e){showErrorPage("404 - 잘못된 주소입니다.","요청하신 주소를 확인해 주세요.","⚠️");}}
 </script>
 </body>
 </html>
