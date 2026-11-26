@@ -21,8 +21,6 @@
       --text-secondary: #a8b0bf;
       --text-muted: #768092;
       --success-text: #6ee7b7;
-      --success-border: rgba(110, 231, 183, 0.32);
-      --success-bg: rgba(16, 185, 129, 0.1);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
@@ -34,7 +32,7 @@
       width: 100%;
       height: 100%;
       margin: 0;
-      overflow: hidden;
+      overflow-x: hidden;
       background-color: var(--bg-base);
       color: var(--text-primary);
       font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
@@ -42,6 +40,7 @@
     }
 
     body {
+      overflow-y: auto;
       background-image:
         radial-gradient(circle at 50% 6%, rgba(229, 72, 77, 0.11), transparent 44%),
         radial-gradient(circle at 15% 88%, rgba(59, 130, 246, 0.04), transparent 36%),
@@ -50,24 +49,22 @@
 
     #app {
       width: 100%;
-      height: 100%;
-      height: 100svh;
+      min-height: 100%;
+      min-height: 100svh;
     }
 
     .page {
       width: min(100%, 460px);
-      height: 100%;
-      height: 100svh;
+      min-height: 100%;
+      min-height: 100svh;
       margin: 0 auto;
-      padding: 16px 20px calc(var(--safe-bottom) + 16px);
+      padding: 14px 18px calc(var(--safe-bottom) + 18px);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
-      overflow: hidden;
+      justify-content: flex-start;
+      gap: 10px;
     }
 
-    /* 상단 상태 및 버전 바 */
     .topbar {
       display: flex;
       align-items: center;
@@ -103,21 +100,19 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* 로고 영역 */
     .hero {
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 0;
-      flex: 1 1 auto;
       padding: 2px 0;
+      flex-shrink: 0;
     }
 
     .hero-ring {
       position: relative;
-      width: clamp(136px, 34svh, 210px);
+      width: clamp(112px, 22svh, 156px);
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       padding: 3px;
@@ -142,19 +137,19 @@
       border-radius: 50%;
       background: #141720;
       color: var(--text-primary);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       letter-spacing: 0.12em;
     }
 
     .brand-caption {
-      margin-top: 8px;
+      margin-top: 6px;
       text-align: center;
     }
 
     .brand-name {
       margin: 0;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       letter-spacing: 0.14em;
       color: var(--text-primary);
@@ -167,17 +162,15 @@
       color: var(--text-muted);
     }
 
-    /* 메인 콘텐츠 영역 */
     .content {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
       flex-shrink: 0;
     }
 
-    /* 담당자 코드 카드 */
     .code-card {
-      padding: 14px 16px;
+      padding: 12px 14px;
       border-radius: 16px;
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
@@ -229,8 +222,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-top: 10px;
-      padding: 10px 10px 10px 14px;
+      margin-top: 8px;
+      padding: 8px 8px 8px 12px;
       border-radius: 12px;
       background: rgba(10, 12, 16, 0.72);
       border: 1px solid var(--border-subtle);
@@ -241,7 +234,7 @@
       flex: 1;
       overflow-wrap: anywhere;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       letter-spacing: 0.06em;
       color: var(--text-primary);
@@ -258,7 +251,7 @@
 
     .copy-btn {
       flex-shrink: 0;
-      padding: 9px 14px;
+      padding: 8px 13px;
       border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: #232836;
@@ -274,11 +267,10 @@
       border-color: rgba(255, 255, 255, 0.2);
     }
 
-    /* 직관적인 다운로드 CTA 버튼 */
     .download-btn {
       width: 100%;
-      min-height: 54px;
-      padding: 14px 18px;
+      min-height: 50px;
+      padding: 12px 16px;
       border-radius: 14px;
       border: 1px solid rgba(255, 130, 134, 0.35);
       background: linear-gradient(180deg, var(--accent-hover) 0%, var(--accent) 100%);
@@ -297,29 +289,27 @@
 
     .download-btn:hover {
       filter: brightness(1.05);
-      box-shadow: 0 12px 28px rgba(229, 72, 77, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
 
     .download-icon-badge {
       display: inline-grid;
       place-items: center;
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 8px;
       background: rgba(0, 0, 0, 0.2);
     }
 
     .download-btn svg {
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
     }
 
-    /* 안내 문구 */
     .hint {
       margin: 0;
       padding: 0 4px;
       font-size: 11px;
-      line-height: 1.5;
+      line-height: 1.45;
       color: var(--text-muted);
     }
 
@@ -337,9 +327,8 @@
       color: var(--text-muted);
     }
 
-    /* 3단계 설치 안내 */
     .install-guide {
-      padding: 13px 14px;
+      padding: 12px 13px;
       border-radius: 16px;
       background: var(--bg-elevated);
       border: 1px solid var(--border-subtle);
@@ -349,7 +338,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 9px;
     }
 
     .guide-title {
@@ -376,11 +365,11 @@
     .guide-steps {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 7px;
     }
 
     .guide-step {
-      padding: 9px 8px;
+      padding: 8px 6px;
       border-radius: 11px;
       background: rgba(255, 255, 255, 0.025);
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -388,9 +377,9 @@
     }
 
     .step-number {
-      width: 22px;
-      height: 22px;
-      margin: 0 auto 6px;
+      width: 20px;
+      height: 20px;
+      margin: 0 auto 5px;
       display: grid;
       place-items: center;
       border-radius: 50%;
@@ -409,16 +398,56 @@
     }
 
     .step-copy {
-      margin-top: 3px;
+      margin-top: 2px;
       font-size: 10px;
-      line-height: 1.35;
+      line-height: 1.3;
       color: var(--text-muted);
     }
 
-    /* 안내 및 오류 화면 */
-    .screen-message {
+    /* 설치 안내 내 유튜브 플레이어 영역 */
+    .video-box {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .video-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .video-label span:last-child {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .video-frame-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #090b0f;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .video-frame-wrap iframe {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
+      border: 0;
+    }
+
+    .screen-message {
+      width: 100%;
+      min-height: 100%;
       min-height: 100svh;
       display: grid;
       place-items: center;
@@ -471,99 +500,14 @@
       color: var(--text-secondary);
     }
 
-    /* 세로가 짧은 모바일 화면 대응 */
-    @media (max-height: 700px) {
-      .page {
-        padding: 10px 16px calc(var(--safe-bottom) + 10px);
-        gap: 8px;
-      }
-
-      .hero-ring {
-        width: clamp(96px, 22svh, 132px);
-      }
-
-      .brand-caption {
-        margin-top: 4px;
-      }
-
-      .brand-name {
-        font-size: 14px;
-      }
-
-      .content {
-        gap: 7px;
-      }
-
-      .code-card {
-        padding: 10px 12px;
-        border-radius: 13px;
-      }
-
-      .code-row {
-        margin-top: 7px;
-        padding: 7px 8px 7px 12px;
-      }
-
-      .code-value {
-        font-size: 15px;
-      }
-
-      .download-btn {
-        min-height: 46px;
-        padding: 10px 14px;
-        font-size: 14px;
-        border-radius: 12px;
-      }
-
-      .install-guide {
-        padding: 9px 11px;
-        border-radius: 13px;
-      }
-
-      .guide-heading {
-        margin-bottom: 6px;
-      }
-
-      .guide-step {
-        padding: 6px 6px;
-      }
-
-      .step-number {
-        width: 18px;
-        height: 18px;
-        margin-bottom: 4px;
-        font-size: 9px;
-      }
-
-      .step-copy {
-        display: none;
-      }
-    }
-
-    /* 가로 폭이 좁은 기기 대응 */
     @media (max-width: 360px) {
       .page {
         padding-left: 14px;
         padding-right: 14px;
       }
 
-      .topbar {
-        padding: 5px 10px;
-        font-size: 10px;
-      }
-
       .code-value {
-        font-size: 15px;
-      }
-
-      .copy-btn {
-        padding: 8px 11px;
-        font-size: 11px;
-      }
-
-      .status {
-        font-size: 10px;
-        padding: 3px 8px;
+        font-size: 14px;
       }
     }
 
@@ -582,6 +526,7 @@
       basePath: "/hunter2/",
       logoImageUrl: "/hunter2/images/logo-web.png",
       apkDownloadUrl: "https://github.com/t27501444-del/hunter2/releases/download/2/hunter2.apk",
+      youtubeVideoId: "TeLhrhl8xAo", // 실제 안내 영상의 유튜브 Video ID로 교체하세요
       versionCode: "2",
       versionName: "2.0"
     };
@@ -641,7 +586,35 @@
       badge.style.backgroundColor = success ? "rgba(16, 185, 129, 0.12)" : "rgba(229, 72, 77, 0.12)";
     }
 
+    function getYoutubeEmbedUrl(videoId) {
+      const cleanId = String(videoId || "").trim();
+      if (!cleanId) return "";
+      const params = new URLSearchParams({
+        rel: "0",
+        playsinline: "1",
+        modestbranding: "1"
+      });
+      return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(cleanId)}?${params.toString()}`;
+    }
+
     function renderPage(managerCode) {
+      const embedUrl = getYoutubeEmbedUrl(CONFIG.youtubeVideoId);
+      const videoSectionHtml = embedUrl ? `
+        <div class="video-box">
+          <div class="video-label">
+            <span>설치 방법 영상 가이드</span>
+            <span>재생 버튼으로 바로 시청</span>
+          </div>
+          <div class="video-frame-wrap">
+            <iframe
+              src="${embedUrl}"
+              title="HUNTER2 앱 설치 안내 영상"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+        </div>` : "";
+
       app.innerHTML = `
         <div class="page">
           <div class="topbar">
@@ -708,6 +681,7 @@
                   <div class="step-copy">브라우저 안내에 따라 설치합니다.</div>
                 </div>
               </div>
+              ${videoSectionHtml}
             </aside>
           </section>
         </div>`;
