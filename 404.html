@@ -3,56 +3,53 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#080609">
+  <meta name="theme-color" content="#08070a">
   <meta name="description" content="HUNTER2 모바일 앱 설치 및 담당자 코드">
-  <title>HUNTER2 | 설치</title>
-
+  <title>HUNTER2 | INSTALLATION NODE</title>
   <style>
     :root {
       color-scheme: dark;
+      --red: #ff2742;
+      --red-bright: #ff5b6e;
+      --ink: #08070a;
+      --panel: rgba(20, 14, 18, .86);
+      --line: rgba(255, 92, 108, .28);
+      --muted: #a99ba0;
       --safe-bottom: env(safe-area-inset-bottom, 0px);
-      --red: #ff263d;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      overflow: hidden;
-    }
-
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
     body {
       color: #fff;
       background:
-        radial-gradient(ellipse at 50% 30%, rgba(130, 0, 25, .32), transparent 48%),
-        radial-gradient(ellipse at 50% 100%, rgba(70, 0, 15, .25), transparent 48%),
-        #080609;
-      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Malgun Gothic", sans-serif;
+        radial-gradient(circle at 50% -8%, rgba(185, 7, 33, .42), transparent 39%),
+        radial-gradient(circle at 7% 78%, rgba(112, 0, 23, .22), transparent 30%),
+        radial-gradient(circle at 92% 74%, rgba(110, 0, 23, .18), transparent 28%),
+        var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Malgun Gothic", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
-    body::before {
+    body::before,
+    body::after {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
+    }
+    body::before {
+      opacity: .14;
+      background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgba(255,255,255,.08) 4px, transparent 5px);
+      mix-blend-mode: screen;
+    }
+    body::after {
       opacity: .2;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");
       mix-blend-mode: screen;
     }
 
-    #app {
-      width: 100%;
-      height: 100%;
-      height: 100svh;
-    }
-
-    /* 페이지 전체: 위에서 아래로 자연스럽게 배치 */
+    #app { width: 100%; height: 100%; height: 100svh; }
     .page {
       position: relative;
       isolation: isolate;
@@ -60,320 +57,145 @@
       height: 100%;
       height: 100svh;
       margin: 0 auto;
-      padding: 0 0 calc(var(--safe-bottom) + 12px);
+      padding: 18px 0 calc(var(--safe-bottom) + 14px);
       display: flex;
       flex-direction: column;
-      align-items: stretch;
       justify-content: flex-start;
-      gap: clamp(12px, 2svh, 18px);
-    }
-
-    /* 상단 이미지: 화면 가로폭에 맞추고 원본 비율 유지 */
-    .hero {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      flex: 0 1 auto;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      gap: 11px;
       overflow: hidden;
     }
 
+    .page::before,
+    .page::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 170px;
+      height: 170px;
+      border: 1px solid rgba(255, 44, 65, .13);
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+    .page::before { top: 112px; left: -120px; box-shadow: 0 0 0 14px rgba(255, 44, 65, .035), 0 0 0 28px rgba(255, 44, 65, .025); }
+    .page::after { right: -120px; bottom: 122px; box-shadow: 0 0 0 14px rgba(255, 44, 65, .035), 0 0 0 28px rgba(255, 44, 65, .025); }
+
+    .topbar {
+      width: 100%;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #d3c9cc;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+    .topbar .signal { display: inline-flex; align-items: center; gap: 7px; color: #ff9aa5; }
+    .signal i { width: 6px; height: 6px; border-radius: 50%; background: var(--red); box-shadow: 0 0 12px var(--red); animation: pulse 1.6s infinite; }
+    .topbar .version { color: #776a70; letter-spacing: .12em; }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 0;
+      display: flex;
+      justify-content: center;
+      overflow: visible;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: 21%;
+      left: 50%;
+      width: 73%;
+      aspect-ratio: 1;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: rgba(214, 11, 39, .2);
+      filter: blur(38px);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 19%;
+      right: 19%;
+      bottom: -4px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      box-shadow: 0 0 16px rgba(255, 35, 61, .72);
+    }
     .logo {
       display: block;
       width: 130%;
       max-width: none;
       height: auto;
-      max-height: 48svh;
+      max-height: 45svh;
       object-fit: contain;
       object-position: top center;
+      filter: saturate(1.12) contrast(1.06) drop-shadow(0 14px 24px rgba(0,0,0,.42));
     }
+    .logo-fallback { display: none; place-items: center; width: 100%; min-height: 180px; color: var(--red-bright); font-weight: 950; letter-spacing: .12em; }
 
-    /* 담당자 코드 및 다운로드 영역 */
     .content {
+      position: relative;
       width: 100%;
       padding: 0 22px;
-      margin-top: 20px; /* 이미지와 담당자 영역 사이 간격 */
       display: grid;
-      gap: 12px;
+      gap: 11px;
       flex: 0 0 auto;
     }
+    .section-kicker { display: flex; align-items: center; gap: 9px; color: #9d858c; font-size: 9px; font-weight: 900; letter-spacing: .22em; text-transform: uppercase; }
+    .section-kicker::before { content: ""; width: 25px; height: 1px; background: var(--red); box-shadow: 0 0 8px var(--red); }
 
     .code-card {
       position: relative;
-      padding: 15px 15px 13px;
       overflow: hidden;
-      border-radius: 15px;
-      border: 1px solid rgba(255,75,94,.3);
-      background: linear-gradient(145deg, rgba(35,13,19,.95), rgba(13,9,12,.97));
-      box-shadow: 0 12px 30px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.04);
+      padding: 15px 15px 14px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: linear-gradient(145deg, rgba(42, 17, 24, .94), rgba(13, 10, 13, .95) 70%);
+      box-shadow: 0 18px 42px rgba(0,0,0,.38), inset 0 1px rgba(255,255,255,.07), 0 0 32px rgba(172, 9, 30, .08);
     }
+    .code-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, rgba(255,255,255,.05), transparent 24%, transparent 76%, rgba(255,37,60,.06)); }
+    .code-card::after { content: ""; position: absolute; top: 0; left: 17px; right: 17px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,112,127,.9), transparent); box-shadow: 0 0 12px rgba(255,43,65,.45); }
+    .card-heading { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .card-title { font-size: 13px; font-weight: 950; letter-spacing: .05em; }
+    .card-title small { margin-right: 7px; color: var(--red-bright); font-size: 10px; letter-spacing: .12em; }
+    .status { flex: 0 0 auto; padding: 5px 8px; border: 1px solid rgba(255,87,104,.34); border-radius: 99px; color: #ff9ca7; background: rgba(255,37,60,.09); font-size: 10px; font-weight: 800; }
+    .code-row { position: relative; display: flex; align-items: center; gap: 9px; margin-top: 11px; padding: 10px 10px 10px 13px; border: 1px solid rgba(255,255,255,.09); border-radius: 10px; background: rgba(0,0,0,.42); }
+    .code-value { min-width: 0; flex: 1; overflow-wrap: anywhere; color: #fff; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 18px; font-weight: 850; letter-spacing: .08em; }
 
-    .code-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 18px;
-      right: 18px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,83,101,.7), transparent);
-    }
+    button { -webkit-tap-highlight-color: transparent; }
+    button:active { transform: scale(.975); filter: brightness(1.18); }
+    .copy-btn { flex: 0 0 auto; padding: 9px 13px; border: 1px solid rgba(255,87,104,.55); border-radius: 8px; color: #fff; background: linear-gradient(135deg,#8e1024,#e52a40); font: inherit; font-size: 12px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 14px rgba(213,25,51,.22); transition: transform .15s, filter .15s; }
+    .download-btn { position: relative; width: 100%; min-height: 58px; display: flex; align-items: center; justify-content: center; gap: 11px; overflow: hidden; border: 1px solid rgba(255,160,167,.62); border-radius: 14px; color: #fff; background: linear-gradient(105deg,#851022 0%,#f12a42 52%,#a80e29 100%); box-shadow: 0 10px 30px rgba(231,25,54,.32), inset 0 1px rgba(255,255,255,.3); font: inherit; font-size: 17px; font-weight: 950; letter-spacing: .14em; cursor: pointer; transition: transform .16s, filter .16s, box-shadow .16s; }
+    .download-btn::before { content: ""; position: absolute; top: 0; bottom: 0; left: -32%; width: 22%; transform: skewX(-20deg); background: rgba(255,255,255,.28); animation: shine 3.2s infinite; }
+    .download-btn svg { width: 21px; height: 21px; }
+    .hint { margin: 1px 0 0; color: #a9959b; font-size: 10px; line-height: 1.5; text-align: center; }
+    .hint strong { color: #e7c2c7; font-weight: 800; }
 
-    .card-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
+    .toast { position: fixed; z-index: 10; left: 50%; bottom: calc(18px + var(--safe-bottom)); transform: translate(-50%,16px); opacity: 0; pointer-events: none; width: max-content; max-width: calc(100% - 36px); padding: 11px 16px; border: 1px solid rgba(255,93,109,.4); border-radius: 99px; background: rgba(25,9,14,.97); color: #fff; font-size: 12px; font-weight: 750; box-shadow: 0 8px 30px rgba(0,0,0,.5); transition: opacity .22s, transform .22s; text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%,0); }
+    .screen-message { width: 100%; height: 100%; min-height: 100svh; display: grid; place-items: center; padding: 30px; text-align: center; }
+    .message-inner { max-width: 360px; }
+    .error-code { color: var(--red-bright); font-size: 12px; font-weight: 900; letter-spacing: .28em; }
+    .message-inner h2 { margin: 14px 0 10px; font-size: 24px; }
+    .message-inner p { margin: 0; color: #b9a9ae; font-size: 13px; line-height: 1.7; }
+    .message-mark { width: 62px; height: 62px; margin: 0 auto 20px; display: grid; place-items: center; border: 1px solid rgba(255,60,80,.5); border-radius: 50%; color: #ff5367; font-size: 28px; box-shadow: 0 0 28px rgba(255,40,60,.2); }
 
-    .card-title {
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: .04em;
-    }
-
-    .card-title small {
-      color: #ff6574;
-      font-size: 10px;
-      margin-right: 7px;
-      letter-spacing: .12em;
-    }
-
-    .status {
-      flex: 0 0 auto;
-      border: 1px solid rgba(255,87,104,.34);
-      border-radius: 99px;
-      padding: 5px 8px;
-      color: #ff9aa4;
-      background: rgba(255,37,60,.09);
-      font-size: 10px;
-      font-weight: 750;
-    }
-
-    .code-row {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin-top: 11px;
-      padding: 10px 10px 10px 13px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,.09);
-      background: rgba(0,0,0,.38);
-    }
-
-    .code-value {
-      min-width: 0;
-      flex: 1;
-      overflow-wrap: anywhere;
-      color: #fff;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 18px;
-      font-weight: 850;
-      letter-spacing: .08em;
-    }
-
-    button {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    button:active {
-      transform: scale(.97);
-      filter: brightness(1.18);
-    }
-
-    .copy-btn {
-      flex: 0 0 auto;
-      border: 1px solid rgba(255,87,104,.5);
-      border-radius: 8px;
-      padding: 9px 13px;
-      color: #fff;
-      background: linear-gradient(135deg,#9f1428,#e52a40);
-      font: inherit;
-      font-size: 12px;
-      font-weight: 850;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(213,25,51,.22);
-      transition: transform .15s, filter .15s;
-    }
-
-    .download-btn {
-      margin-top: 16px;
-      width: 100%;
-      min-height: 57px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 11px;
-      border: 1px solid rgba(255,160,167,.58);
-      border-radius: 13px;
-      color: white;
-      background: linear-gradient(105deg,#8e1024 0%,#f12a42 52%,#a80e29 100%);
-      box-shadow: 0 8px 25px rgba(231,25,54,.3), inset 0 1px rgba(255,255,255,.24);
-      font: inherit;
-      font-size: 17px;
-      font-weight: 950;
-      letter-spacing: .12em;
-      cursor: pointer;
-      transition: transform .16s, filter .16s, box-shadow .16s;
-    }
-
-    .download-btn:active {
-      transform: translateY(2px) scale(.99);
-      filter: brightness(1.2);
-      box-shadow: 0 3px 12px rgba(231,25,54,.3);
-    }
-
-    .download-btn svg {
-      width: 21px;
-      height: 21px;
-    }
-
-    .hint {
-      margin: 0;
-      color: #a9959b;
-      font-size: 10px;
-      line-height: 1.5;
-      text-align: center;
-    }
-
-    .toast {
-      position: fixed;
-      z-index: 10;
-      left: 50%;
-      bottom: calc(18px + var(--safe-bottom));
-      transform: translate(-50%,16px);
-      opacity: 0;
-      pointer-events: none;
-      width: max-content;
-      max-width: calc(100% - 36px);
-      padding: 11px 16px;
-      border: 1px solid rgba(255,93,109,.4);
-      border-radius: 99px;
-      background: rgba(25,9,14,.97);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 750;
-      box-shadow: 0 8px 30px rgba(0,0,0,.5);
-      transition: opacity .22s, transform .22s;
-      text-align: center;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translate(-50%,0);
-    }
-
-    .screen-message {
-      width: 100%;
-      height: 100%;
-      min-height: 100svh;
-      display: grid;
-      place-items: center;
-      padding: 30px;
-      text-align: center;
-    }
-
-    .message-inner {
-      max-width: 360px;
-    }
-
-    .error-code {
-      color: #ff4055;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: .28em;
-    }
-
-    .message-inner h2 {
-      margin: 14px 0 10px;
-      font-size: 24px;
-    }
-
-    .message-inner p {
-      margin: 0;
-      color: #b9a9ae;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .message-mark {
-      width: 62px;
-      height: 62px;
-      margin: 0 auto 20px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(255,60,80,.5);
-      border-radius: 50%;
-      color: #ff5367;
-      font-size: 28px;
-      box-shadow: 0 0 28px rgba(255,40,60,.2);
-    }
-
-    /* 낮은 화면에서는 이미지와 콘텐츠 간격을 줄임 */
-    @media (max-height: 650px) {
-      .page {
-        gap: 8px;
-        padding-bottom: calc(var(--safe-bottom) + 7px);
-      }
-
-      .logo {
-        max-height: 36svh;
-      }
-
-      .content {
-        gap: 8px;
-      }
-
-      .code-card {
-        padding: 11px 13px;
-      }
-
-      .code-row {
-        margin-top: 8px;
-        padding-top: 8px;
-        padding-bottom: 8px;
-      }
-
-      .download-btn {
-        min-height: 51px;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .content {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-
-      .code-value {
-        font-size: 15px;
-      }
-
-      .status {
-        font-size: 9px;
-        padding: 5px 7px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        transition-duration: .01ms !important;
-      }
-    }
+    @keyframes pulse { 50% { opacity: .35; transform: scale(.7); } }
+    @keyframes shine { 0%, 35% { left: -32%; } 70%, 100% { left: 125%; } }
+    @media (max-height: 700px) { .page { padding-top: 10px; gap: 6px; } .logo { max-height: 37svh; } .content { gap: 7px; } .code-card { padding: 11px 13px; } .code-row { margin-top: 8px; padding-top: 8px; padding-bottom: 8px; } .download-btn { min-height: 51px; } }
+    @media (max-width: 360px) { .content, .topbar { padding-left: 16px; padding-right: 16px; } .code-value { font-size: 15px; } .status { font-size: 9px; padding: 5px 7px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } }
   </style>
 </head>
-
 <body>
   <main id="app"></main>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
   <script>
-    // ==========================================
-    // 설정 영역
-    // ==========================================
     const CONFIG = {
       basePath: "/hunter2/",
       logoImageUrl: "/hunter2/images/logo-web.png",
@@ -387,47 +209,23 @@
     function isMobileDevice() {
       const ua = navigator.userAgent || "";
       const isIPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
-
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua) || isIPadOS;
     }
 
     function getManagerCode() {
       const pathname = window.location.pathname;
-
       if (!pathname.startsWith(CONFIG.basePath)) return null;
-
-      let segment = pathname.slice(CONFIG.basePath.length).replace(/\/$/, "");
-
+      const segment = pathname.slice(CONFIG.basePath.length).replace(/\/$/, "");
       if (!segment || segment.includes("/") || segment.includes("\\")) return null;
       if (window.location.search !== "" || window.location.hash !== "") return null;
-
-      let decoded;
-
       try {
-        decoded = decodeURIComponent(segment);
-      } catch (_) {
-        return null;
-      }
-
-      if (!decoded || decoded.length < 1 || decoded.includes("/") || decoded.includes("\\")) {
-        return null;
-      }
-
-      return decoded;
+        const decoded = decodeURIComponent(segment);
+        return decoded && !decoded.includes("/") && !decoded.includes("\\") ? decoded : null;
+      } catch (_) { return null; }
     }
 
     function showMessage(code, title, description) {
-      app.innerHTML = `
-        <section class="screen-message">
-          <div class="message-inner">
-            <div class="message-mark" aria-hidden="true">!</div>
-            <div class="error-code">${code}</div>
-            <h2></h2>
-            <p></p>
-          </div>
-        </section>
-      `;
-
+      app.innerHTML = `<section class="screen-message"><div class="message-inner"><div class="message-mark" aria-hidden="true">!</div><div class="error-code">${code}</div><h2></h2><p></p></div></section>`;
       app.querySelector("h2").textContent = title;
       app.querySelector("p").textContent = description;
     }
@@ -435,11 +233,8 @@
     function showToast(message) {
       toastElement.textContent = message;
       toastElement.classList.add("show");
-
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toastElement.classList.remove("show");
-      }, 2300);
+      toastTimer = setTimeout(() => toastElement.classList.remove("show"), 2300);
     }
 
     async function copyToClipboard(text) {
@@ -449,140 +244,80 @@
           return true;
         }
       } catch (_) {}
-
       const textarea = document.createElement("textarea");
       textarea.value = text;
       textarea.setAttribute("readonly", "");
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      textarea.style.pointerEvents = "none";
-      textarea.style.left = "-9999px";
-
+      Object.assign(textarea.style, { position: "fixed", opacity: "0", pointerEvents: "none", left: "-9999px" });
       document.body.appendChild(textarea);
       textarea.select();
       textarea.setSelectionRange(0, textarea.value.length);
-
       let copied = false;
-
-      try {
-        copied = document.execCommand("copy");
-      } catch (_) {
-        copied = false;
-      }
-
+      try { copied = document.execCommand("copy"); } catch (_) { copied = false; }
       textarea.remove();
       return copied;
     }
 
     function setCopyStatus(success, manual = false) {
       const badge = document.getElementById("copyStatus");
-
       if (!badge) return;
-
-      badge.textContent = success
-        ? "클립보드 복사됨"
-        : (manual ? "버튼 클릭 시 복사" : "자동 복사 대기중");
-
+      badge.textContent = success ? "클립보드 복사됨" : (manual ? "버튼 클릭 시 복사" : "자동 복사 대기중");
       badge.style.color = success ? "#a5f0c3" : "#ff9aa4";
-      badge.style.borderColor = success
-        ? "rgba(100,220,155,.35)"
-        : "rgba(255,87,104,.34)";
+      badge.style.borderColor = success ? "rgba(100,220,155,.35)" : "rgba(255,87,104,.34)";
     }
 
     function renderPage(managerCode) {
       app.innerHTML = `
         <div class="page">
+          <div class="topbar"><span class="signal"><i></i>Secure channel online</span><span class="version">H2 // 2.0</span></div>
           <header class="hero">
             <img class="logo" id="brandLogo" alt="HUNTER2 로고">
+            <div class="logo-fallback" id="logoFallback">HUNTER2</div>
           </header>
-
           <section class="content" aria-label="앱 설치">
+            <div class="section-kicker">Installation node / mobile access</div>
             <article class="code-card">
-              <div class="card-heading">
-                <div class="card-title"><small>01</small>담당자 코드</div>
-                <span class="status" id="copyStatus">자동 복사 대기중</span>
-              </div>
-
-              <div class="code-row">
-                <div class="code-value" id="managerCode"></div>
-                <button class="copy-btn" id="copyButton" type="button">복사</button>
-              </div>
+              <div class="card-heading"><div class="card-title"><small>01</small>담당자 코드</div><span class="status" id="copyStatus">자동 복사 대기중</span></div>
+              <div class="code-row"><div class="code-value" id="managerCode"></div><button class="copy-btn" id="copyButton" type="button">복사</button></div>
             </article>
-
-            <button class="download-btn" id="downloadButton" type="button">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 3.5v11m0 0 4.5-4.5M12 14.5 7.5 10M4 17.5v2A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-2"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              다운로드
-            </button>
-
-            <p class="hint">다운로드 시 담당자 코드가 자동 복사됩니다. 설치가 차단되면 브라우저의 앱 설치를 허용해 주세요.</p>
+            <button class="download-btn" id="downloadButton" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5v11m0 0 4.5-4.5M12 14.5 7.5 10M4 17.5v2A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>다운로드</button>
+            <p class="hint"><strong>코드는 자동 복사</strong>됩니다. 설치가 차단되면 브라우저의 앱 설치 권한을 허용해 주세요.</p>
           </section>
-        </div>
-      `;
+        </div>`;
 
       const logo = document.getElementById("brandLogo");
+      const fallback = document.getElementById("logoFallback");
       logo.src = CONFIG.logoImageUrl;
-
-      // 담당자 코드는 textContent로 출력해 HTML 삽입을 방지합니다.
+      logo.addEventListener("error", () => { logo.style.display = "none"; fallback.style.display = "grid"; });
       document.getElementById("managerCode").textContent = managerCode;
 
       document.getElementById("copyButton").addEventListener("click", async () => {
         const success = await copyToClipboard(managerCode);
         setCopyStatus(success, true);
-
-        showToast(
-          success
-            ? "담당자 코드가 복사되었습니다."
-            : "복사에 실패했습니다. 코드를 길게 눌러 복사해 주세요."
-        );
+        showToast(success ? "담당자 코드가 복사되었습니다." : "복사에 실패했습니다. 코드를 길게 눌러 복사해 주세요.");
       });
 
       document.getElementById("downloadButton").addEventListener("click", async () => {
         const success = await copyToClipboard(managerCode);
         setCopyStatus(success, true);
-
-        showToast(
-          success
-            ? "담당자 코드 복사 완료 · 다운로드를 시작합니다."
-            : "코드 복사 실패 · 다운로드를 시작합니다."
-        );
-
+        showToast(success ? "코드 복사 완료 · 다운로드를 시작합니다." : "코드 복사 실패 · 다운로드를 시작합니다.");
         const link = document.createElement("a");
         link.href = CONFIG.apkDownloadUrl;
         link.download = "hunter2.apk";
         link.rel = "noopener";
-
         document.body.appendChild(link);
         link.click();
         link.remove();
       });
 
-      // 페이지 진입 시 담당자 코드 자동 복사를 시도합니다.
-      copyToClipboard(managerCode).then(success => {
-        setCopyStatus(success, false);
-      });
+      copyToClipboard(managerCode).then(success => setCopyStatus(success, false));
     }
 
     if (!isMobileDevice()) {
-      showMessage(
-        "MOBILE ONLY",
-        "모바일 전용 페이지입니다.",
-        "HUNTER2 설치 페이지는 스마트폰 또는 태블릿에서 접속해 주세요."
-      );
+      showMessage("MOBILE ONLY", "모바일 전용 페이지입니다.", "HUNTER2 설치 페이지는 스마트폰 또는 태블릿에서 접속해 주세요.");
     } else {
       const managerCode = getManagerCode();
-
-      if (managerCode === null) {
-        showMessage(
-          "404 ERROR",
-          "404 - 페이지를 찾을 수 없습니다.",
-          "담당자 코드가 포함된 올바른 설치 주소로 다시 접속해 주세요."
-        );
-      } else {
-        renderPage(managerCode);
-      }
+      if (managerCode === null) showMessage("404 ERROR", "404 - 페이지를 찾을 수 없습니다.", "담당자 코드가 포함된 올바른 설치 주소로 다시 접속해 주세요.");
+      else renderPage(managerCode);
     }
   </script>
 </body>
