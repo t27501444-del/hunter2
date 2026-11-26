@@ -84,16 +84,17 @@
       padding: 0 22px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 18px;
       color: #d3c9cc;
       font-size: 9px;
       font-weight: 900;
       letter-spacing: .2em;
       text-transform: uppercase;
     }
-    .topbar .signal { display: inline-flex; align-items: center; gap: 7px; color: #ff9aa5; }
+    .topbar .signal { display: inline-flex; align-items: center; gap: 7px; min-height: 16px; color: #ff9aa5; }
     .signal i { width: 6px; height: 6px; border-radius: 50%; background: var(--red); box-shadow: 0 0 12px var(--red); animation: pulse 1.6s infinite; }
-    .topbar .version { color: #f0c8cd; letter-spacing: .12em; text-shadow: 0 0 10px rgba(255, 72, 91, .34); }
+    .topbar .version { display: inline-flex; align-items: center; min-height: 16px; color: #f0c8cd; letter-spacing: .12em; text-align: center; text-shadow: 0 0 10px rgba(255, 72, 91, .34); }
 
     .hero {
       position: relative;
