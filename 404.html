@@ -404,7 +404,7 @@
       color: var(--text-muted);
     }
 
-    /* 설치 안내 내 유튜브 플레이어 영역 */
+    /* 다중 유튜브 영상 선택 및 재생 영역 */
     .video-box {
       margin-top: 10px;
       padding-top: 10px;
@@ -415,7 +415,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
       font-size: 11px;
       font-weight: 700;
       color: var(--text-secondary);
@@ -425,6 +425,39 @@
       font-size: 10px;
       font-weight: 500;
       color: var(--text-muted);
+    }
+
+    .video-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+      scrollbar-width: none;
+    }
+
+    .video-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .video-tab {
+      flex: 0 0 auto;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+    }
+
+    .video-tab.is-active {
+      background: var(--accent-soft);
+      border-color: var(--border-accent);
+      color: #fca5a5;
     }
 
     .video-frame-wrap {
@@ -526,7 +559,11 @@
       basePath: "/hunter2/",
       logoImageUrl: "/hunter2/images/logo-web.png",
       apkDownloadUrl: "https://github.com/t27501444-del/hunter2/releases/download/2/hunter2.apk",
-      youtubeVideoId: "TeLhrhl8xAo", // 실제 안내 영상의 유튜브 Video ID로 교체하세요
+      youtubeVideos: [
+        { title: "1. 설치 방법", videoId: "KPAxjLdSlUo" },
+        { title: "2. 권한 허용", videoId: "KPAxjLdSlUo" },
+        { title: "3. 코드 입력", videoId: "KPAxjLdSlUo" }
+      ],
       versionCode: "2",
       versionName: "2.0"
     };
@@ -597,17 +634,38 @@
       return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(cleanId)}?${params.toString()}`;
     }
 
+    function getValidVideos() {
+      if (!Array.isArray(CONFIG.youtubeVideos)) return [];
+      return CONFIG.youtubeVideos
+        .map((item, idx) => ({
+          title: item && item.title ? String(item.title) : `영상 ${idx + 1}`,
+          videoId: item && item.videoId ? String(item.videoId).trim() : ""
+        }))
+        .filter(item => item.videoId.length > 0);
+    }
+
     function renderPage(managerCode) {
-      const embedUrl = getYoutubeEmbedUrl(CONFIG.youtubeVideoId);
-      const videoSectionHtml = embedUrl ? `
+      const videos = getValidVideos();
+      const videoSectionHtml = videos.length > 0 ? `
         <div class="video-box">
           <div class="video-label">
-            <span>설치 방법 영상 가이드</span>
-            <span>재생 버튼으로 바로 시청</span>
+            <span>설치 안내 영상 (${videos.length}개)</span>
+            <span>탭을 눌러 영상 전환</span>
+          </div>
+          <div class="video-tabs" id="videoTabs" role="tablist" aria-label="안내 영상 목록">
+            ${videos.map((v, index) => `
+              <button
+                type="button"
+                class="video-tab ${index === 0 ? "is-active" : ""}"
+                data-video-index="${index}"
+                role="tab"
+                aria-selected="${index === 0 ? "true" : "false"}"></button>
+            `).join("")}
           </div>
           <div class="video-frame-wrap">
             <iframe
-              src="${embedUrl}"
+              id="youtubePlayer"
+              src="${getYoutubeEmbedUrl(videos[0].videoId)}"
               title="HUNTER2 앱 설치 안내 영상"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen
@@ -691,6 +749,23 @@
       logo.src = CONFIG.logoImageUrl;
       logo.addEventListener("error", () => { logo.style.display = "none"; fallback.style.display = "grid"; });
       document.getElementById("managerCode").textContent = managerCode;
+
+      if (videos.length > 0) {
+        const tabs = Array.from(document.querySelectorAll("#videoTabs .video-tab"));
+        const player = document.getElementById("youtubePlayer");
+        tabs.forEach((tab, idx) => {
+          tab.textContent = videos[idx].title;
+          tab.addEventListener("click", () => {
+            tabs.forEach((t, i) => {
+              const active = i === idx;
+              t.classList.toggle("is-active", active);
+              t.setAttribute("aria-selected", active ? "true" : "false");
+            });
+            player.src = getYoutubeEmbedUrl(videos[idx].videoId);
+            player.title = `${videos[idx].title} - HUNTER2 설치 안내`;
+          });
+        });
+      }
 
       document.getElementById("copyButton").addEventListener("click", async () => {
         const success = await copyToClipboard(managerCode);
