@@ -404,11 +404,43 @@
       color: var(--text-muted);
     }
 
-    /* 설치 안내 내 세로 나열 동영상 목록 */
+    /* 03 참고 동영상 영역 */
+    .ref-videos-section {
+      padding: 12px 13px;
+      border-radius: 16px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .ref-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .ref-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .ref-title small {
+      color: var(--accent-hover);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .ref-note {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
     .video-list {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -613,22 +645,28 @@
 
     function renderPage(managerCode) {
       const videos = getValidVideos();
-      const videoListHtml = videos.length > 0 ? `
-        <div class="video-list" id="videoList">
-          ${videos.map((v, index) => `
-            <div class="video-item" data-video-index="${index}">
-              <div class="video-title"></div>
-              <div class="video-frame-wrap">
-                <iframe
-                  src="${getYoutubeEmbedUrl(v.videoId)}"
-                  title="${v.title.replace(/"/g, "&quot;")}"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                  loading="lazy"></iframe>
+      const refVideosHtml = videos.length > 0 ? `
+        <aside class="ref-videos-section" aria-label="참고 동영상">
+          <div class="ref-heading">
+            <div class="ref-title"><small>03</small>참고 동영상</div>
+            <div class="ref-note">총 ${videos.length}개</div>
+          </div>
+          <div class="video-list" id="videoList">
+            ${videos.map((v, index) => `
+              <div class="video-item" data-video-index="${index}">
+                <div class="video-title"></div>
+                <div class="video-frame-wrap">
+                  <iframe
+                    src="${getYoutubeEmbedUrl(v.videoId)}"
+                    title="HUNTER2 참고 동영상"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    loading="lazy"></iframe>
+                </div>
               </div>
-            </div>
-          `).join("")}
-        </div>` : "";
+            `).join("")}
+          </div>
+        </aside>` : "";
 
       app.innerHTML = `
         <div class="page">
@@ -696,8 +734,8 @@
                   <div class="step-copy">브라우저 안내에 따라 설치합니다.</div>
                 </div>
               </div>
-              ${videoListHtml}
             </aside>
+            ${refVideosHtml}
           </section>
         </div>`;
 
