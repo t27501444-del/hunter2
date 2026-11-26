@@ -175,6 +175,18 @@
     .download-btn svg { width: 21px; height: 21px; }
     .hint { margin: 1px 0 0; color: #a9959b; font-size: 10px; line-height: 1.5; text-align: center; }
     .hint strong { color: #e7c2c7; font-weight: 800; }
+    .install-guide { position: relative; margin-top: 2px; padding: 13px 13px 12px; border: 1px solid rgba(255,255,255,.1); border-radius: 15px; background: linear-gradient(135deg, rgba(24,18,22,.92), rgba(12,10,13,.86)); box-shadow: inset 0 1px rgba(255,255,255,.045), 0 12px 26px rgba(0,0,0,.22); }
+    .install-guide::before { content: ""; position: absolute; top: 0; left: 15%; right: 15%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,92,108,.55), transparent); }
+    .guide-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
+    .guide-title { color: #f3e9eb; font-size: 11px; font-weight: 950; letter-spacing: .08em; }
+    .guide-title small { margin-right: 7px; color: var(--red-bright); font-size: 9px; letter-spacing: .16em; }
+    .guide-note { color: #786b70; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+    .guide-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .guide-step { position: relative; min-width: 0; padding: 9px 7px 8px; border: 1px solid rgba(255,255,255,.065); border-radius: 10px; background: rgba(0,0,0,.2); }
+    .guide-step:not(:last-child)::after { content: "›"; position: absolute; top: 16px; right: -7px; z-index: 1; color: var(--red-bright); font-size: 16px; font-weight: 300; }
+    .step-number { width: 21px; height: 21px; display: grid; place-items: center; margin-bottom: 7px; border: 1px solid rgba(255,81,99,.5); border-radius: 50%; color: #ff9aa5; background: rgba(255,37,60,.1); font-size: 9px; font-weight: 950; }
+    .step-title { color: #f5edef; font-size: 10px; font-weight: 900; white-space: nowrap; }
+    .step-copy { margin-top: 4px; color: #95878c; font-size: 9px; line-height: 1.45; }
 
     .toast { position: fixed; z-index: 10; left: 50%; bottom: calc(18px + var(--safe-bottom)); transform: translate(-50%,16px); opacity: 0; pointer-events: none; width: max-content; max-width: calc(100% - 36px); padding: 11px 16px; border: 1px solid rgba(255,93,109,.4); border-radius: 99px; background: rgba(25,9,14,.97); color: #fff; font-size: 12px; font-weight: 750; box-shadow: 0 8px 30px rgba(0,0,0,.5); transition: opacity .22s, transform .22s; text-align: center; }
     .toast.show { opacity: 1; transform: translate(-50%,0); }
@@ -187,7 +199,7 @@
 
     @keyframes pulse { 50% { opacity: .35; transform: scale(.7); } }
     @keyframes shine { 0%, 35% { left: -32%; } 70%, 100% { left: 125%; } }
-    @media (max-height: 700px) { .page { padding-top: 10px; gap: 6px; } .logo { max-height: 37svh; } .content { gap: 7px; } .code-card { padding: 11px 13px; } .code-row { margin-top: 8px; padding-top: 8px; padding-bottom: 8px; } .download-btn { min-height: 51px; } }
+    @media (max-height: 700px) { .page { padding-top: 10px; gap: 6px; } .logo { max-height: 37svh; } .content { gap: 7px; } .code-card { padding: 11px 13px; } .code-row { margin-top: 8px; padding-top: 8px; padding-bottom: 8px; } .download-btn { min-height: 51px; } .install-guide { padding-top: 10px; padding-bottom: 9px; } .guide-heading { margin-bottom: 7px; } .guide-step { padding-top: 6px; padding-bottom: 6px; } .step-number { width: 18px; height: 18px; margin-bottom: 4px; } .step-copy { display: none; } }
     @media (max-width: 360px) { .content, .topbar { padding-left: 16px; padding-right: 16px; } .code-value { font-size: 15px; } .status { font-size: 9px; padding: 5px 7px; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } }
   </style>
@@ -281,6 +293,14 @@
             </article>
             <button class="download-btn" id="downloadButton" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5v11m0 0 4.5-4.5M12 14.5 7.5 10M4 17.5v2A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>다운로드</button>
             <p class="hint"><strong>코드는 자동 복사</strong>됩니다. 설치가 차단되면 브라우저의 앱 설치 권한을 허용해 주세요.</p>
+            <aside class="install-guide" aria-label="설치 안내">
+              <div class="guide-heading"><div class="guide-title"><small>02</small>설치 안내</div><div class="guide-note">quick start</div></div>
+              <div class="guide-steps">
+                <div class="guide-step"><div class="step-number">01</div><div class="step-title">코드 확인</div><div class="step-copy">담당자 코드를 확인합니다.</div></div>
+                <div class="guide-step"><div class="step-number">02</div><div class="step-title">앱 다운로드</div><div class="step-copy">위의 다운로드 버튼을 누릅니다.</div></div>
+                <div class="guide-step"><div class="step-number">03</div><div class="step-title">설치 허용</div><div class="step-copy">브라우저 안내에 따라 설치합니다.</div></div>
+              </div>
+            </aside>
           </section>
         </div>`;
 
