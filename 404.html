@@ -1,169 +1,162 @@
-<!doctype html>
+from pathlib import Path
+
+html = r'''<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#090608">
-  <meta name="description" content="HUNTER2 모바일 앱 설치 및 담당자 코드 안내">
+  <meta name="theme-color" content="#080609">
+  <meta name="description" content="HUNTER2 모바일 앱 설치 및 담당자 코드">
   <title>HUNTER2 | 설치</title>
   <style>
     :root {
       color-scheme: dark;
-      --bg: #080608;
-      --panel: rgba(20, 9, 13, .88);
       --red: #ff263d;
-      --red-bright: #ff5263;
-      --muted: #b8a9ad;
-      --line: rgba(255, 75, 94, .25);
+      --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     * { box-sizing: border-box; }
-    html, body { min-height: 100%; margin: 0; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
     body {
-      min-height: 100svh;
-      overflow-x: hidden;
-      background:
-        radial-gradient(ellipse at 50% 22%, rgba(126, 0, 20, .32), transparent 42%),
-        radial-gradient(ellipse at 50% 100%, rgba(74, 0, 15, .25), transparent 45%),
-        #080608;
       color: #fff;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(130, 0, 25, .32), transparent 48%),
+        radial-gradient(ellipse at 50% 100%, rgba(70, 0, 15, .25), transparent 48%),
+        #080609;
       font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Malgun Gothic", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
     body::before {
-      content: "";
-      position: fixed; inset: 0; pointer-events: none; opacity: .22;
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .2;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
       mix-blend-mode: screen;
     }
+    #app { width: 100%; height: 100%; }
     .page {
-      width: min(100%, 480px);
-      min-height: 100svh;
+      position: relative; isolation: isolate;
+      width: min(100%, 480px); height: 100%; height: 100svh;
       margin: 0 auto;
-      padding: max(34px, env(safe-area-inset-top)) 24px calc(28px + var(--safe-bottom));
-      display: flex; flex-direction: column; align-items: center;
-      position: relative;
+      padding: calc(var(--safe-top) + clamp(12px, 3.2svh, 28px)) 23px calc(var(--safe-bottom) + 14px);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: clamp(12px, 2.2svh, 20px);
     }
-    .hero { width: 100%; text-align: center; padding-top: 8px; }
+    .hero {
+      width: 100%; flex: 0 1 auto; min-height: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding-bottom: clamp(18px, 3.6svh, 30px);
+    }
     .logo-ring {
-      width: 190px; height: 190px; margin: 0 auto 24px; padding: 5px;
-      border-radius: 50%; position: relative;
-      background: linear-gradient(145deg, #fff0f1 0%, #ff344b 26%, #5e0717 65%, #ff6b45 100%);
-      box-shadow: 0 0 14px rgba(255, 39, 60, .75), 0 0 42px rgba(255, 23, 48, .38), inset 0 0 12px #ffb1b9;
+      position: relative; width: min(53vw, 218px, 27svh); aspect-ratio: 1;
+      padding: 4px; border-radius: 50%;
+      background: linear-gradient(145deg, #fff0f1 0%, #ff344b 25%, #650817 66%, #ff714d 100%);
+      box-shadow: 0 0 14px rgba(255,39,60,.8), 0 0 44px rgba(255,23,48,.4), inset 0 0 12px #ffb1b9;
     }
     .logo-ring::before {
-      content: ""; position: absolute; inset: -9px; border-radius: 50%;
-      border: 1px solid rgba(255, 67, 82, .42);
-      box-shadow: 0 0 22px rgba(255, 33, 54, .35);
+      content: ""; position: absolute; inset: -8px; border: 1px solid rgba(255,67,82,.48);
+      border-radius: 50%; box-shadow: 0 0 22px rgba(255,33,53,.32);
     }
     .logo {
-      display: block; width: 100%; height: 100%; border-radius: 50%;
-      object-fit: cover; background: #10070a;
-      border: 2px solid rgba(255,255,255,.16);
+      display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.16); background: #10070a;
     }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      color: #ff7784; font-size: 10px; font-weight: 800; letter-spacing: .34em;
-      text-transform: uppercase; margin-bottom: 8px;
-    }
-    .eyebrow::before, .eyebrow::after { content: ""; width: 22px; height: 1px; background: #a91b2d; }
-    h1 {
-      margin: 0; font-size: clamp(38px, 11vw, 50px); line-height: 1;
-      font-weight: 950; letter-spacing: .12em; padding-left: .12em;
-      text-shadow: 0 0 12px rgba(255, 42, 64, .55), 0 3px 22px rgba(0,0,0,.9);
+    .brand-title {
+      position: relative; z-index: 2; margin-top: clamp(-27px, -3.5svh, -18px);
+      font-size: clamp(39px, 11.5vw, 54px); line-height: .98;
+      font-weight: 1000; letter-spacing: .105em; padding-left: .105em;
+      color: #fff; -webkit-text-stroke: 1px rgba(255,220,224,.65);
+      text-shadow:
+        0 2px 0 #7e0719, 0 4px 0 #45040e,
+        0 0 9px rgba(255,40,62,.95), 0 0 25px rgba(255,20,45,.8),
+        0 7px 18px rgba(0,0,0,.95);
     }
     .subtitle {
-      margin: 12px 0 0; color: #ff4559; font-size: 14px; font-weight: 800;
+      margin: 8px 0 0; color: #ff5265; font-size: 12px; font-weight: 900;
       letter-spacing: .65em; padding-left: .65em;
+      text-shadow: 0 0 12px rgba(255,37,60,.65);
     }
-    .rule {
-      width: 74px; height: 2px; margin: 25px auto 25px;
-      background: linear-gradient(90deg, transparent, #ff3048, transparent);
-      box-shadow: 0 0 12px #ff263d;
+    .content { width: 100%; display: grid; gap: 12px; flex: 0 0 auto; }
+    .code-card {
+      position: relative; padding: 15px 15px 13px; overflow: hidden;
+      border-radius: 15px; border: 1px solid rgba(255,75,94,.3);
+      background: linear-gradient(145deg, rgba(35,13,19,.95), rgba(13,9,12,.97));
+      box-shadow: 0 12px 30px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.04);
     }
-    .content { width: 100%; display: grid; gap: 15px; }
-    .card {
-      position: relative; overflow: hidden; border-radius: 17px;
-      background: linear-gradient(145deg, rgba(35, 13, 19, .94), rgba(13, 9, 12, .96));
-      border: 1px solid var(--line);
-      box-shadow: 0 14px 35px rgba(0,0,0,.32), inset 0 1px rgba(255,255,255,.035);
-    }
-    .code-card { padding: 19px 18px 17px; }
-    .card::after {
+    .code-card::before {
       content: ""; position: absolute; top: 0; left: 18px; right: 18px; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,83,101,.65), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,83,101,.7), transparent);
     }
     .card-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .card-title { font-size: 13px; font-weight: 850; letter-spacing: .04em; }
+    .card-title { font-size: 13px; font-weight: 900; letter-spacing: .04em; }
     .card-title small { color: #ff6574; font-size: 10px; margin-right: 7px; letter-spacing: .12em; }
     .status {
-      flex: 0 0 auto; border: 1px solid rgba(255, 87, 104, .34);
-      border-radius: 99px; padding: 6px 9px; color: #ff9aa4;
-      background: rgba(255, 37, 60, .09); font-size: 10px; font-weight: 750;
+      flex: 0 0 auto; border: 1px solid rgba(255,87,104,.34); border-radius: 99px;
+      padding: 5px 8px; color: #ff9aa4; background: rgba(255,37,60,.09);
+      font-size: 10px; font-weight: 750;
     }
     .code-row {
-      display: flex; align-items: center; gap: 9px; margin-top: 15px;
-      padding: 12px 11px 12px 14px; border-radius: 11px;
-      border: 1px solid rgba(255,255,255,.09); background: rgba(0,0,0,.36);
+      display: flex; align-items: center; gap: 9px; margin-top: 11px;
+      padding: 10px 10px 10px 13px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.09); background: rgba(0,0,0,.38);
     }
     .code-value {
       min-width: 0; flex: 1; overflow-wrap: anywhere; color: #fff;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 18px; font-weight: 850; letter-spacing: .08em;
     }
+    button { -webkit-tap-highlight-color: transparent; }
+    button:active { transform: scale(.97); filter: brightness(1.18); }
     .copy-btn {
       flex: 0 0 auto; border: 1px solid rgba(255,87,104,.5); border-radius: 8px;
-      padding: 9px 13px; color: #fff; background: linear-gradient(135deg, #9f1428, #e52a40);
+      padding: 9px 13px; color: #fff; background: linear-gradient(135deg,#9f1428,#e52a40);
       font: inherit; font-size: 12px; font-weight: 850; cursor: pointer;
-      box-shadow: 0 4px 14px rgba(213, 25, 51, .22);
-      transition: transform .15s, filter .15s;
+      box-shadow: 0 4px 14px rgba(213,25,51,.22); transition: transform .15s, filter .15s;
     }
-    button:active { transform: scale(.97); filter: brightness(1.18); }
-    .code-help { margin: 11px 1px 0; color: #a9969b; font-size: 11px; line-height: 1.55; }
     .download-btn {
-      width: 100%; min-height: 58px; display: flex; align-items: center; justify-content: center; gap: 11px;
-      border: 1px solid rgba(255,160,167,.55); border-radius: 13px;
-      color: white; background: linear-gradient(105deg, #8e1024 0%, #f12a42 52%, #a80e29 100%);
-      box-shadow: 0 8px 25px rgba(231, 25, 54, .28), inset 0 1px rgba(255,255,255,.24);
-      font: inherit; font-size: 17px; font-weight: 900; letter-spacing: .08em;
+      width: 100%; min-height: 57px; display: flex; align-items: center; justify-content: center; gap: 11px;
+      border: 1px solid rgba(255,160,167,.58); border-radius: 13px; color: white;
+      background: linear-gradient(105deg,#8e1024 0%,#f12a42 52%,#a80e29 100%);
+      box-shadow: 0 8px 25px rgba(231,25,54,.3), inset 0 1px rgba(255,255,255,.24);
+      font: inherit; font-size: 17px; font-weight: 950; letter-spacing: .12em;
       cursor: pointer; transition: transform .16s, filter .16s, box-shadow .16s;
     }
     .download-btn:active { transform: translateY(2px) scale(.99); filter: brightness(1.2); box-shadow: 0 3px 12px rgba(231,25,54,.3); }
     .download-btn svg { width: 21px; height: 21px; }
-    .guide { padding: 17px 18px 16px; }
-    .guide-title { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 850; margin-bottom: 12px; }
-    .guide-title svg { color: #ff5367; width: 17px; height: 17px; }
-    .steps { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-    .steps li { display: grid; grid-template-columns: 22px 1fr; gap: 9px; color: #c8b9bd; font-size: 11px; line-height: 1.65; }
-    .num {
-      width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%;
-      color: #ff9aa4; background: rgba(255,44,66,.13); border: 1px solid rgba(255,74,91,.32);
-      font-size: 10px; font-weight: 900;
-    }
-    .steps strong { color: #fff; font-weight: 800; }
-    .foot { margin-top: auto; padding-top: 25px; color: #66545a; font-size: 9px; letter-spacing: .22em; text-align: center; }
+    .hint { margin: 0; color: #a9959b; font-size: 10px; line-height: 1.5; text-align: center; }
     .toast {
-      position: fixed; z-index: 10; left: 50%; bottom: calc(22px + var(--safe-bottom));
-      transform: translate(-50%, 16px); opacity: 0; pointer-events: none;
-      width: max-content; max-width: calc(100% - 36px); padding: 12px 17px;
+      position: fixed; z-index: 10; left: 50%; bottom: calc(18px + var(--safe-bottom));
+      transform: translate(-50%,16px); opacity: 0; pointer-events: none;
+      width: max-content; max-width: calc(100% - 36px); padding: 11px 16px;
       border: 1px solid rgba(255,93,109,.4); border-radius: 99px;
-      background: rgba(25, 9, 14, .96); color: #fff; font-size: 12px; font-weight: 750;
-      box-shadow: 0 8px 30px rgba(0,0,0,.5); transition: opacity .22s, transform .22s;
-      text-align: center;
+      background: rgba(25,9,14,.97); color: #fff; font-size: 12px; font-weight: 750;
+      box-shadow: 0 8px 30px rgba(0,0,0,.5); transition: opacity .22s, transform .22s; text-align: center;
     }
-    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.show { opacity: 1; transform: translate(-50%,0); }
     .screen-message {
-      width: 100%; min-height: 100svh; display: grid; place-items: center;
+      width: 100%; height: 100%; min-height: 100svh; display: grid; place-items: center;
       padding: 30px; text-align: center;
     }
     .message-inner { max-width: 360px; }
     .error-code { color: #ff4055; font-size: 12px; font-weight: 900; letter-spacing: .28em; }
     .message-inner h2 { margin: 14px 0 10px; font-size: 24px; }
     .message-inner p { margin: 0; color: #b9a9ae; font-size: 13px; line-height: 1.7; }
-    .message-mark { width: 62px; height: 62px; margin: 0 auto 20px; display: grid; place-items: center; border: 1px solid rgba(255,60,80,.5); border-radius: 50%; color: #ff5367; font-size: 28px; box-shadow: 0 0 28px rgba(255,40,60,.2); }
+    .message-mark {
+      width: 62px; height: 62px; margin: 0 auto 20px; display: grid; place-items: center;
+      border: 1px solid rgba(255,60,80,.5); border-radius: 50%; color: #ff5367; font-size: 28px;
+      box-shadow: 0 0 28px rgba(255,40,60,.2);
+    }
+    @media (max-height: 650px) {
+      .page { gap: 9px; padding-top: calc(var(--safe-top) + 8px); padding-bottom: calc(var(--safe-bottom) + 8px); }
+      .logo-ring { width: min(43vw, 170px, 23svh); }
+      .hero { padding-bottom: 16px; }
+      .brand-title { font-size: clamp(35px, 10vw, 45px); margin-top: -19px; }
+      .subtitle { margin-top: 5px; }
+      .content { gap: 8px; }
+      .code-card { padding: 11px 13px; }
+      .code-row { margin-top: 8px; padding-top: 8px; padding-bottom: 8px; }
+      .download-btn { min-height: 51px; }
+    }
     @media (max-width: 360px) {
-      .page { padding-left: 18px; padding-right: 18px; }
-      .logo-ring { width: 164px; height: 164px; }
+      .page { padding-left: 17px; padding-right: 17px; }
       .code-value { font-size: 15px; }
       .status { font-size: 9px; padding: 5px 7px; }
     }
@@ -173,7 +166,6 @@
 <body>
   <main id="app"></main>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
   <script>
     // ==========================================
     // 설정 영역 (실제 경로에 맞게 수정하세요)
@@ -198,18 +190,14 @@
       const pathname = window.location.pathname;
       if (!pathname.startsWith(CONFIG.basePath)) return null;
 
-      let segment = pathname.slice(CONFIG.basePath.length);
-      segment = segment.replace(/\/$/, "");
+      let segment = pathname.slice(CONFIG.basePath.length).replace(/\/$/, "");
       if (!segment || segment.includes("/") || segment.includes("\\")) return null;
       if (window.location.search !== "" || window.location.hash !== "") return null;
 
       let decoded;
-      try {
-        decoded = decodeURIComponent(segment);
-      } catch (_) {
-        return null;
-      }
-      // 인코딩된 구분자까지 차단해 단일 경로 세그먼트만 허용합니다.
+      try { decoded = decodeURIComponent(segment); }
+      catch (_) { return null; }
+
       if (!decoded || decoded.length < 1 || decoded.includes("/") || decoded.includes("\\")) return null;
       return decoded;
     }
@@ -220,8 +208,7 @@
           <div class="message-inner">
             <div class="message-mark" aria-hidden="true">!</div>
             <div class="error-code">${code}</div>
-            <h2></h2>
-            <p></p>
+            <h2></h2><p></p>
           </div>
         </section>`;
       app.querySelector("h2").textContent = title;
@@ -241,9 +228,7 @@
           await navigator.clipboard.writeText(text);
           return true;
         }
-      } catch (_) {
-        // 권한 거부 또는 비보안 컨텍스트에서는 아래 폴백을 시도합니다.
-      }
+      } catch (_) {}
 
       const textarea = document.createElement("textarea");
       textarea.value = text;
@@ -256,11 +241,8 @@
       textarea.select();
       textarea.setSelectionRange(0, textarea.value.length);
       let copied = false;
-      try {
-        copied = document.execCommand("copy");
-      } catch (_) {
-        copied = false;
-      }
+      try { copied = document.execCommand("copy"); }
+      catch (_) { copied = false; }
       textarea.remove();
       return copied;
     }
@@ -268,9 +250,7 @@
     function setCopyStatus(success, manual = false) {
       const badge = document.getElementById("copyStatus");
       if (!badge) return;
-      badge.textContent = success
-        ? "클립보드 복사됨"
-        : (manual ? "버튼 클릭 시 복사" : "자동 복사 대기중");
+      badge.textContent = success ? "클립보드 복사됨" : (manual ? "버튼 클릭 시 복사" : "자동 복사 대기중");
       badge.style.color = success ? "#a5f0c3" : "#ff9aa4";
       badge.style.borderColor = success ? "rgba(100,220,155,.35)" : "rgba(255,87,104,.34)";
     }
@@ -279,17 +259,13 @@
       app.innerHTML = `
         <div class="page">
           <header class="hero">
-            <div class="logo-ring">
-              <img class="logo" id="brandLogo" alt="HUNTER2 로고">
-            </div>
-            <div class="eyebrow">HUNTER ACCESS SYSTEM</div>
-            <h1>HUNTER2</h1>
+            <div class="logo-ring"><img class="logo" id="brandLogo" alt="HUNTER2 로고"></div>
+            <h1 class="brand-title">HUNTER2</h1>
             <p class="subtitle">설 치</p>
-            <div class="rule"></div>
           </header>
 
           <section class="content" aria-label="앱 설치">
-            <article class="card code-card">
+            <article class="code-card">
               <div class="card-heading">
                 <div class="card-title"><small>01</small>담당자 코드</div>
                 <span class="status" id="copyStatus">자동 복사 대기중</span>
@@ -298,7 +274,6 @@
                 <div class="code-value" id="managerCode"></div>
                 <button class="copy-btn" id="copyButton" type="button">복사</button>
               </div>
-              <p class="code-help">앱 설치 및 최초 실행 시 사용할 담당자 코드입니다.</p>
             </article>
 
             <button class="download-btn" id="downloadButton" type="button">
@@ -307,24 +282,8 @@
               </svg>
               다운로드
             </button>
-
-            <article class="card guide">
-              <div class="guide-title">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M12 3 21 7.5v9L12 21l-9-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.7"/>
-                  <path d="M12 8v5m0 3h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                설치 안내
-              </div>
-              <ol class="steps">
-                <li><span class="num">1</span><span><strong>다운로드 버튼</strong>을 누르면 담당자 코드 복사를 다시 시도한 후 APK 파일을 다운로드합니다.</span></li>
-                <li><span class="num">2</span><span>다운로드가 완료되면 파일을 열어 <strong>HUNTER2 앱 설치</strong>를 진행하세요.</span></li>
-                <li><span class="num">3</span><span>설치가 차단되면 설정에서 <strong>‘출처를 알 수 없는 앱 설치’</strong> 또는 해당 브라우저의 앱 설치 허용을 켜주세요.</span></li>
-                <li><span class="num">4</span><span>앱을 실행하고 복사된 <strong>담당자 코드</strong>를 입력하세요.</span></li>
-              </ol>
-            </article>
+            <p class="hint">다운로드 시 담당자 코드가 자동 복사됩니다. 설치가 차단되면 브라우저의 앱 설치를 허용해 주세요.</p>
           </section>
-          <footer class="foot">HUNTER2 · SECURE INSTALLATION</footer>
         </div>`;
 
       const logo = document.getElementById("brandLogo");
@@ -334,19 +293,19 @@
         if (ring) ring.remove();
       }, { once: true });
 
-      // 코드 문자열은 HTML로 삽입하지 않고 textContent로만 출력합니다.
+      // 담당자 코드는 HTML이 아닌 textContent로 출력해 XSS를 방지합니다.
       document.getElementById("managerCode").textContent = managerCode;
 
       document.getElementById("copyButton").addEventListener("click", async () => {
         const success = await copyToClipboard(managerCode);
         setCopyStatus(success, true);
-        showToast(success ? "담당자 코드가 복사되었습니다." : "복사할 수 없습니다. 코드를 길게 눌러 복사해 주세요.");
+        showToast(success ? "담당자 코드가 복사되었습니다." : "복사에 실패했습니다. 코드를 길게 눌러 복사해 주세요.");
       });
 
       document.getElementById("downloadButton").addEventListener("click", async () => {
         const success = await copyToClipboard(managerCode);
         setCopyStatus(success, true);
-        showToast(success ? "담당자 코드 복사 완료 · 다운로드를 시작합니다." : "코드 복사에 실패했습니다. 다운로드를 시작합니다.");
+        showToast(success ? "담당자 코드 복사 완료 · 다운로드를 시작합니다." : "코드 복사 실패 · 다운로드를 시작합니다.");
 
         const link = document.createElement("a");
         link.href = CONFIG.apkDownloadUrl;
@@ -357,7 +316,7 @@
         link.remove();
       });
 
-      // 페이지 진입 시 자동 복사: 브라우저 정책에 따라 사용자 동작이 필요할 수 있습니다.
+      // 진입 즉시 자동 복사를 시도합니다. 브라우저 정책상 사용자 동작이 필요할 수 있습니다.
       copyToClipboard(managerCode).then(success => setCopyStatus(success, false));
     }
 
@@ -374,3 +333,8 @@
   </script>
 </body>
 </html>
+'''
+
+out = Path("/mnt/data/hunter2-install.html")
+out.write_text(html, encoding="utf-8")
+print(f"Updated {out} ({out.stat().st_size:,} bytes)")
