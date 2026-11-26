@@ -188,8 +188,6 @@
     .step-title { color: #f5edef; font-size: 10px; font-weight: 900; white-space: nowrap; }
     .step-copy { margin-top: 4px; color: #95878c; font-size: 9px; line-height: 1.45; }
 
-    .toast { position: fixed; z-index: 10; left: 50%; bottom: calc(18px + var(--safe-bottom)); transform: translate(-50%,16px); opacity: 0; pointer-events: none; width: max-content; max-width: calc(100% - 36px); padding: 11px 16px; border: 1px solid rgba(255,93,109,.4); border-radius: 99px; background: rgba(25,9,14,.97); color: #fff; font-size: 12px; font-weight: 750; box-shadow: 0 8px 30px rgba(0,0,0,.5); transition: opacity .22s, transform .22s; text-align: center; }
-    .toast.show { opacity: 1; transform: translate(-50%,0); }
     .screen-message { width: 100%; height: 100%; min-height: 100svh; display: grid; place-items: center; padding: 30px; text-align: center; }
     .message-inner { max-width: 360px; }
     .error-code { color: var(--red-bright); font-size: 12px; font-weight: 900; letter-spacing: .28em; }
@@ -206,7 +204,6 @@
 </head>
 <body>
   <main id="app"></main>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script>
     const CONFIG = {
       basePath: "/hunter2/",
@@ -215,8 +212,6 @@
     };
 
     const app = document.getElementById("app");
-    const toastElement = document.getElementById("toast");
-    let toastTimer = null;
 
     function isMobileDevice() {
       const ua = navigator.userAgent || "";
@@ -240,13 +235,6 @@
       app.innerHTML = `<section class="screen-message"><div class="message-inner"><div class="message-mark" aria-hidden="true">!</div><div class="error-code">${code}</div><h2></h2><p></p></div></section>`;
       app.querySelector("h2").textContent = title;
       app.querySelector("p").textContent = description;
-    }
-
-    function showToast(message) {
-      toastElement.textContent = message;
-      toastElement.classList.add("show");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toastElement.classList.remove("show"), 2300);
     }
 
     async function copyToClipboard(text) {
@@ -313,13 +301,11 @@
       document.getElementById("copyButton").addEventListener("click", async () => {
         const success = await copyToClipboard(managerCode);
         setCopyStatus(success, true);
-        showToast(success ? "담당자 코드가 복사되었습니다." : "복사에 실패했습니다. 코드를 길게 눌러 복사해 주세요.");
       });
 
       document.getElementById("downloadButton").addEventListener("click", async () => {
         const success = await copyToClipboard(managerCode);
         setCopyStatus(success, true);
-        showToast(success ? "코드 복사 완료 · 다운로드를 시작합니다." : "코드 복사 실패 · 다운로드를 시작합니다.");
         const link = document.createElement("a");
         link.href = CONFIG.apkDownloadUrl;
         link.download = "hunter2.apk";
