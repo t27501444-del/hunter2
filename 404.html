@@ -174,7 +174,10 @@
     .download-btn::before { content: ""; position: absolute; top: 0; bottom: 0; left: -32%; width: 22%; transform: skewX(-20deg); background: rgba(255,255,255,.28); animation: shine 3.2s infinite; }
     .download-btn svg { width: 21px; height: 21px; }
     .hint { margin: 1px 0 0; color: #a9959b; font-size: 10px; line-height: 1.5; text-align: center; }
-    .hint strong { color: #e7c2c7; font-weight: 800; }
+    .hint-line { display: block; }
+    .hint-primary { color: #e7c2c7; font-weight: 850; letter-spacing: .01em; }
+    .hint-secondary { margin-top: 2px; color: #95878c; }
+    .hint-secondary::before { content: "•"; display: inline-block; margin-right: 5px; color: var(--red-bright); font-size: 12px; line-height: 0; vertical-align: -1px; text-shadow: 0 0 7px rgba(255,39,66,.75); }
     .install-guide { position: relative; margin-top: 2px; padding: 13px 13px 12px; border: 1px solid rgba(255,255,255,.1); border-radius: 15px; background: linear-gradient(135deg, rgba(24,18,22,.92), rgba(12,10,13,.86)); box-shadow: inset 0 1px rgba(255,255,255,.045), 0 12px 26px rgba(0,0,0,.22); }
     .install-guide::before { content: ""; position: absolute; top: 0; left: 15%; right: 15%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,92,108,.55), transparent); }
     .guide-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
@@ -208,7 +211,9 @@
     const CONFIG = {
       basePath: "/hunter2/",
       logoImageUrl: "/hunter2/images/logo-web.png",
-      apkDownloadUrl: "https://github.com/t27501444-del/hunter2/releases/download/2/hunter2.apk"
+      apkDownloadUrl: "https://github.com/t27501444-del/hunter2/releases/download/2/hunter2.apk",
+      versionCode: "2",
+      versionName: "2.0"
     };
 
     const app = document.getElementById("app");
@@ -268,7 +273,7 @@
     function renderPage(managerCode) {
       app.innerHTML = `
         <div class="page">
-          <div class="topbar"><span class="signal"><i></i>Secure channel online</span><span class="version">H2 // 2.0</span></div>
+          <div class="topbar"><span class="signal"><i></i>Secure channel online</span><span class="version">${CONFIG.versionName} (${CONFIG.versionCode})</span></div>
           <header class="hero">
             <img class="logo" id="brandLogo" alt="HUNTER2 로고">
             <div class="logo-fallback" id="logoFallback">HUNTER2</div>
