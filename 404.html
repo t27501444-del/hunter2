@@ -144,7 +144,6 @@
     }
     @media (max-height: 650px) {
       .page { gap: 9px; padding-top: calc(var(--safe-top) + 8px); padding-bottom: calc(var(--safe-bottom) + 8px); }
-      .logo-ring { width: min(43vw, 170px, 23svh); }
       .hero { padding-bottom: 16px; }
       .brand-title { font-size: clamp(35px, 10vw, 45px); margin-top: -19px; }
       .subtitle { margin-top: 5px; }
@@ -257,7 +256,7 @@
       app.innerHTML = `
         <div class="page">
           <header class="hero">
-            <div class="logo-ring"><img class="logo" id="brandLogo" alt="HUNTER2 로고"></div>
+            <div><img class="logo" id="brandLogo" alt="HUNTER2 로고"></div>
           </header>
 
           <section class="content" aria-label="앱 설치">
